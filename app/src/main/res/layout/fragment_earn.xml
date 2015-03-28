@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="gravity"
+        android:background="@android:color/holo_purple"
+        android:textSize="24sp"
+        android:padding="5dp"
+        android:text="16 Credits"/>
+
+    <ListView
+        android:layout_margin="5dp"
+        android:background="@android:color/holo_blue_light"
+        android:id="@+id/earnListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
+</LinearLayout>
