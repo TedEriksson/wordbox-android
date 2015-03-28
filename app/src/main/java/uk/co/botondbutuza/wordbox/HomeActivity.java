@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.EActivity;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -267,9 +269,6 @@ class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHolder>
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        if(picasso == null)
-            picasso = Picasso.with(viewGroup.getContext());
-
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, viewGroup, false);
         return new ViewHolder(item);
     }
@@ -281,7 +280,7 @@ class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHolder>
         viewHolder.desc.setText(act.desc);
         viewHolder.hearts.setText(act.hearts + " hearts");
 
-        picasso
+        Picasso.with(viewHolder.hearts.getContext())
                 .load(R.mipmap.ic_launcher)
                 .resize(300, 300).centerCrop()
                 .into(viewHolder.image);
