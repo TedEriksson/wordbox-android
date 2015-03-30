@@ -65,4 +65,14 @@ dependencies {
     // Android Annotations
     apt "org.androidannotations:androidannotations:3.2"
     compile 'org.androidannotations:androidannotations-api:3.2'
+
+    // Realm Database
+    compile 'io.realm:realm-android:0.80.0'
+
+    // Spring for REST
+    compile 'org.springframework.android:spring-android-core:1.0.1.RELEASE'
+    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+
+    // GSON
+    compile 'org.immutables:gson:2.0.2'
 }
