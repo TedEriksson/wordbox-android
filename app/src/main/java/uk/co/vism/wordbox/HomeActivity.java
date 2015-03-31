@@ -18,6 +18,7 @@ import uk.co.vism.wordbox.fragments.EarnFragment_;
 import uk.co.vism.wordbox.fragments.YoursFragment;
 import uk.co.vism.wordbox.fragments.YoursFragment_;
 import uk.co.vism.wordbox.managers.RestClientManager;
+import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.User;
 
 @EActivity(R.layout.activity_home)
@@ -50,20 +51,24 @@ public class HomeActivity extends FragmentActivity
         viewPager.setCurrentItem(1);
         adapter.notifyDataSetChanged();
 
-        background();
+        downloadUser();
     }
 
     @Background
-    void background()
+    void downloadUser()
     {
-        // Update user on app launch (this will get all info about them
-        RestClientManager.updateUser(this, 1);
-
-        // Get updated User from database. Later this will be changed to be easier.
+        // This is the database instance
         Realm realm = Realm.getInstance(this);
-        User user = realm.where(User.class).equalTo("id", 1).findFirst();
+
+        // Update user on app launch (this will get all info about them
+        RestClientManager.updateUser(this, realm, 1);
+
+        // Get updated User from database.
+        User user = UserManager.getUserById(realm, 1);
         // Showing that the User is usable
         Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
+
+        // MUST close the instance when finished with it
         realm.close();
     }
 }

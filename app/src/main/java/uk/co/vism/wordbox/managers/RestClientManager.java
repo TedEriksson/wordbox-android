@@ -26,10 +26,8 @@ public class RestClientManager {
         return instance;
     }
 
-    public static void updateUser(Context context, int id) {
+    public static void updateUser(Context context, Realm realm, int id) {
         RestClientManager instance = getInstance(context);
-
-        Realm realm = Realm.getInstance(context);
 
         realm.beginTransaction();
 
