@@ -1,10 +1,7 @@
-package uk.co.botondbutuza.wordbox.models;
-
-import java.util.List;
+package uk.co.vism.wordbox.models;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.RealmClass;
 
 /**
  * Created by Ted Eriksson on 30/03/15.

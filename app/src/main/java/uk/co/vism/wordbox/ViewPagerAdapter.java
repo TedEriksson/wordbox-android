@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox;
+package uk.co.vism.wordbox;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;

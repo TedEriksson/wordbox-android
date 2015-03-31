@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox;
+package uk.co.vism.wordbox;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

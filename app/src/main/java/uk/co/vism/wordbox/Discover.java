@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox;
+package uk.co.vism.wordbox;
 
 public class Discover
 {

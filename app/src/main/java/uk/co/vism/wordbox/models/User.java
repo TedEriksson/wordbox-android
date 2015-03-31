@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox.models;
+package uk.co.vism.wordbox.models;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;

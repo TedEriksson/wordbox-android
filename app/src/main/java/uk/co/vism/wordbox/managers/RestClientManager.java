@@ -1,14 +1,11 @@
-package uk.co.botondbutuza.wordbox.managers;
+package uk.co.vism.wordbox.managers;
 
 import android.content.Context;
 
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.rest.RestService;
-
 import io.realm.Realm;
-import uk.co.botondbutuza.wordbox.models.User;
-import uk.co.botondbutuza.wordbox.network.RestClient;
-import uk.co.botondbutuza.wordbox.network.RestClient_;
+import uk.co.vism.wordbox.models.User;
+import uk.co.vism.wordbox.network.RestClient;
+import uk.co.vism.wordbox.network.RestClient_;
 
 /**
  * Created by Ted Eriksson on 30/03/15.

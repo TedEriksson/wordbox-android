@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox.fragments;
+package uk.co.vism.wordbox.fragments;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,9 +11,9 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Random;
 
-import uk.co.botondbutuza.wordbox.Discover;
-import uk.co.botondbutuza.wordbox.DiscoverAdapter;
-import uk.co.botondbutuza.wordbox.R;
+import uk.co.vism.wordbox.Discover;
+import uk.co.vism.wordbox.DiscoverAdapter;
+import uk.co.vism.wordbox.R;
 
 @EFragment(R.layout.fragment_discover)
 public class DiscoverFragment extends Fragment

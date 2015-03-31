@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox;
+package uk.co.vism.wordbox;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

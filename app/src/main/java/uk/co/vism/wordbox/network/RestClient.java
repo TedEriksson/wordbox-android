@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox.network;
+package uk.co.vism.wordbox.network;
 
 import com.google.gson.JsonObject;
 

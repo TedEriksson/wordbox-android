@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox.fragments;
+package uk.co.vism.wordbox.fragments;
 
 import android.support.v4.app.Fragment;
 import android.widget.ArrayAdapter;
@@ -11,7 +11,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import uk.co.botondbutuza.wordbox.R;
+import uk.co.vism.wordbox.R;
 
 @EFragment(R.layout.fragment_earn)
 public class EarnFragment extends Fragment

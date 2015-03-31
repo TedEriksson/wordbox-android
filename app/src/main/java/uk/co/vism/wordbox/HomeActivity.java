@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.wordbox;
+package uk.co.vism.wordbox;
 
 import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
@@ -11,14 +11,14 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import io.realm.Realm;
-import uk.co.botondbutuza.wordbox.fragments.DiscoverFragment;
-import uk.co.botondbutuza.wordbox.fragments.DiscoverFragment_;
-import uk.co.botondbutuza.wordbox.fragments.EarnFragment;
-import uk.co.botondbutuza.wordbox.fragments.EarnFragment_;
-import uk.co.botondbutuza.wordbox.fragments.YoursFragment;
-import uk.co.botondbutuza.wordbox.fragments.YoursFragment_;
-import uk.co.botondbutuza.wordbox.managers.RestClientManager;
-import uk.co.botondbutuza.wordbox.models.User;
+import uk.co.vism.wordbox.fragments.DiscoverFragment;
+import uk.co.vism.wordbox.fragments.DiscoverFragment_;
+import uk.co.vism.wordbox.fragments.EarnFragment;
+import uk.co.vism.wordbox.fragments.EarnFragment_;
+import uk.co.vism.wordbox.fragments.YoursFragment;
+import uk.co.vism.wordbox.fragments.YoursFragment_;
+import uk.co.vism.wordbox.managers.RestClientManager;
+import uk.co.vism.wordbox.models.User;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends FragmentActivity

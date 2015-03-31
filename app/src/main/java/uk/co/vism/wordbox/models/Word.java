@@ -1,7 +1,6 @@
-package uk.co.botondbutuza.wordbox.models;
+package uk.co.vism.wordbox.models;
 
 import io.realm.RealmObject;
-import io.realm.annotations.RealmClass;
 
 /**
  * Created by Ted Eriksson on 30/03/15.
