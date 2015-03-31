@@ -7,6 +7,7 @@ import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.network.RestClient;
 import uk.co.vism.wordbox.network.RestClient_;
 
+
 /**
  * Created by Ted Eriksson on 30/03/15.
  */
@@ -35,7 +36,5 @@ public class RestClientManager {
         realm.createOrUpdateObjectFromJson(User.class, json);
 
         realm.commitTransaction();
-
-        realm.close();
     }
 }

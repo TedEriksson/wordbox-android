@@ -12,10 +12,13 @@ import org.androidannotations.annotations.ViewById;
 
 import io.realm.Realm;
 import uk.co.vism.wordbox.fragments.DiscoverFragment;
+
 import uk.co.vism.wordbox.fragments.DiscoverFragment_;
 import uk.co.vism.wordbox.fragments.EarnFragment;
+
 import uk.co.vism.wordbox.fragments.EarnFragment_;
 import uk.co.vism.wordbox.fragments.YoursFragment;
+
 import uk.co.vism.wordbox.fragments.YoursFragment_;
 import uk.co.vism.wordbox.managers.RestClientManager;
 import uk.co.vism.wordbox.managers.UserManager;
@@ -55,8 +58,9 @@ public class HomeActivity extends FragmentActivity
     }
 
     @Background
-    void downloadUser()
-    {
+    void downloadUser() {
+        Realm.deleteRealmFile(this);
+
         // This is the database instance
         Realm realm = Realm.getInstance(this);
 
