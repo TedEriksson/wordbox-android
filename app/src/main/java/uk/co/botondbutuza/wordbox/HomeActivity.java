@@ -3,18 +3,22 @@ package uk.co.botondbutuza.wordbox;
 import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import io.realm.Realm;
 import uk.co.botondbutuza.wordbox.fragments.DiscoverFragment;
 import uk.co.botondbutuza.wordbox.fragments.DiscoverFragment_;
 import uk.co.botondbutuza.wordbox.fragments.EarnFragment;
 import uk.co.botondbutuza.wordbox.fragments.EarnFragment_;
 import uk.co.botondbutuza.wordbox.fragments.YoursFragment;
 import uk.co.botondbutuza.wordbox.fragments.YoursFragment_;
+import uk.co.botondbutuza.wordbox.managers.RestClientManager;
+import uk.co.botondbutuza.wordbox.models.User;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends FragmentActivity
@@ -52,6 +56,14 @@ public class HomeActivity extends FragmentActivity
     @Background
     void background()
     {
+        // Update user on app launch (this will get all info about them
+        RestClientManager.updateUser(this, 1);
 
+        // Get updated User from database. Later this will be changed to be easier.
+        Realm realm = Realm.getInstance(this);
+        User user = realm.where(User.class).equalTo("id", 1).findFirst();
+        // Showing that the User is usable
+        Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
+        realm.close();
     }
 }
