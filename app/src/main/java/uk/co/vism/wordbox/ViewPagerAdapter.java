@@ -1,6 +1,7 @@
 package uk.co.vism.wordbox;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements ActionBar.
 {
     private ArrayList<TabInfo> tabs;
     private Context context;
+    private ViewPager viewPager;
 
     final class TabInfo
     {
@@ -28,10 +30,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements ActionBar.
         }
     }
 
-    public ViewPagerAdapter(Context context, FragmentManager fm)
+    public ViewPagerAdapter(ViewPager viewPager, Context context, FragmentManager fm)
     {
         super(fm);
         this.context = context;
+        this.viewPager = viewPager;
 
         tabs = new ArrayList<>();
     }
@@ -64,7 +67,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements ActionBar.
     @Override
     public void onPageSelected(int position)
     {
-        //getActionBar().setSelectedNavigationItem(position);
+        ((Activity)context).getActionBar().setSelectedNavigationItem(position);
     }
 
     @Override
@@ -73,11 +76,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements ActionBar.
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
     {
-//        Object tag = tab.getTag();
-//        for(int i = 0; i < tabs.size(); i++)
-//        {
-//            if(tabs.get(i) == tag) viewPager.setCurrentItem(i);
-//        }
+        Object tag = tab.getTag();
+        for(int i = 0; i < tabs.size(); i++)
+        {
+            if(tabs.get(i) == tag) viewPager.setCurrentItem(i);
+        }
     }
 
     @Override

@@ -1,25 +1,29 @@
-package uk.co.vism.wordbox;
+package uk.co.vism.wordbox.activities;
 
 import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import io.realm.Realm;
-import uk.co.vism.wordbox.fragments.DiscoverFragment;
+import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.ViewPagerAdapter;
+import uk.co.vism.wordbox.fragments.BoxesFragment;
 
-import uk.co.vism.wordbox.fragments.DiscoverFragment_;
-import uk.co.vism.wordbox.fragments.EarnFragment;
+import uk.co.vism.wordbox.fragments.BoxesFragment_;
+import uk.co.vism.wordbox.fragments.FriendsFragment;
 
-import uk.co.vism.wordbox.fragments.EarnFragment_;
-import uk.co.vism.wordbox.fragments.YoursFragment;
+import uk.co.vism.wordbox.fragments.FriendsFragment_;
+import uk.co.vism.wordbox.fragments.MineFragment;
 
-import uk.co.vism.wordbox.fragments.YoursFragment_;
+import uk.co.vism.wordbox.fragments.MineFragment_;
 import uk.co.vism.wordbox.managers.RestClientManager;
 import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.User;
@@ -34,31 +38,43 @@ public class HomeActivity extends FragmentActivity
     @AfterViews
     void init()
     {
-        adapter = new ViewPagerAdapter(HomeActivity.this, getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(viewPager, HomeActivity.this, getSupportFragmentManager());
+        setupActionBar();
+
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(adapter);
+        viewPager.setCurrentItem(1);
+
+        adapter.notifyDataSetChanged();
+
+        //downloadUser();
+    }
+
+    private void setupActionBar()
+    {
+        ActionBar.Tab tab;
 
         final ActionBar bar = getActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
 
-        ActionBar.Tab tab;
-
-        tab = adapter.addTab(bar.newTab().setText(DiscoverFragment.NAME), DiscoverFragment_.class, null);
+        tab = adapter.addTab(bar.newTab().setText(BoxesFragment.NAME), BoxesFragment_.class, null);
         bar.addTab(tab);
-        tab = adapter.addTab(bar.newTab().setText(EarnFragment.NAME), EarnFragment_.class, null);
+        tab = adapter.addTab(bar.newTab().setText(FriendsFragment.NAME), FriendsFragment_.class, null);
         bar.addTab(tab);
-        tab = adapter.addTab(bar.newTab().setText(YoursFragment.NAME), YoursFragment_.class, null);
+        tab = adapter.addTab(bar.newTab().setText(MineFragment.NAME), MineFragment_.class, null);
         bar.addTab(tab);
+    }
 
-        viewPager.setCurrentItem(1);
-        adapter.notifyDataSetChanged();
-
-        downloadUser();
+    @Click
+    public void addNewBox()
+    {
+        CreateBoxActivity_.intent(HomeActivity.this).start();
     }
 
     @Background
-    void downloadUser() {
+    void downloadUser()
+    {
         Realm.deleteRealmFile(this);
 
         // This is the database instance

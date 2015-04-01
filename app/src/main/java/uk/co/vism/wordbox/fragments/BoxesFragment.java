@@ -11,16 +11,16 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Random;
 
+import uk.co.vism.wordbox.BoxesAdapter;
 import uk.co.vism.wordbox.Discover;
-import uk.co.vism.wordbox.DiscoverAdapter;
 import uk.co.vism.wordbox.R;
 
-@EFragment(R.layout.fragment_discover)
-public class DiscoverFragment extends Fragment
+@EFragment(R.layout.fragment_boxes)
+public class BoxesFragment extends Fragment
 {
-    public static final String NAME = "Discover";
+    public static final String NAME = "Boxes";
 
-    @ViewById(R.id.discoverRecyclerView)
+    @ViewById(R.id.boxesRecyclerView)
     public RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -31,7 +31,7 @@ public class DiscoverFragment extends Fragment
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new DiscoverAdapter(getDiscovers());
+        adapter = new BoxesAdapter(getDiscovers());
         recyclerView.setAdapter(adapter);
     }
 

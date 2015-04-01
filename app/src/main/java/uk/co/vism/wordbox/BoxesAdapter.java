@@ -11,26 +11,26 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHolder>
+public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
 {
     private ArrayList<Discover> discovers;
 
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         public ImageView image;
-        public TextView desc;
+        public TextView title;
         public TextView hearts;
 
         public ViewHolder(View v)
         {
             super(v);
-            this.image  = (ImageView)v.findViewById(R.id.discoverCardImage);
-            this.desc   = (TextView)v.findViewById(R.id.discoverCardDescription);
-            this.hearts = (TextView)v.findViewById(R.id.discoverCardHearts);
+            this.image  = (ImageView)v.findViewById(R.id.boxesCardImage);
+            this.title  = (TextView)v.findViewById(R.id.boxesCardTitle);
+            this.hearts = (TextView)v.findViewById(R.id.boxesCardHearts);
         }
     }
 
-    public DiscoverAdapter(ArrayList<Discover> discovers)
+    public BoxesAdapter(ArrayList<Discover> discovers)
     {
         this.discovers = discovers;
     }
@@ -46,12 +46,12 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
     public void onBindViewHolder(ViewHolder viewHolder, int i)
     {
         Discover act = discovers.get(i);
-        viewHolder.desc.setText(act.desc);
+        viewHolder.title.setText(act.desc);
         viewHolder.hearts.setText(act.hearts + " hearts");
 
         Picasso.with(viewHolder.hearts.getContext())
                 .load(R.mipmap.ic_launcher)
-                .resize(300, 300).centerCrop()
+                .resize(500, 500).centerCrop()
                 .into(viewHolder.image);
     }
 

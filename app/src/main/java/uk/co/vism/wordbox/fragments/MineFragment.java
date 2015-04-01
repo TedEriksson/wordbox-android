@@ -6,8 +6,8 @@ import org.androidannotations.annotations.EFragment;
 
 import uk.co.vism.wordbox.R;
 
-@EFragment(R.layout.fragment_yours)
-public class YoursFragment extends Fragment
+@EFragment(R.layout.fragment_mine)
+public class MineFragment extends Fragment
 {
-    public static final String NAME = "Yours";
+    public static final String NAME = "Mine";
 }

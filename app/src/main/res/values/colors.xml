@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="primary" type="color">#ff108013</item>
-    <item name="navbar" type="color">#ff108013</item>
-    <item name="primary_dark" type="color">#ff0f5910</item>
-    <item name="accent" type="color">#ff0f5910</item>
+    <item name="blue" type="color">#ff1878C8</item>
+    <item name="darkblue" type="color">#ff125892</item>
+    <item name="orange" type="color">#ffFE6E00</item>
+    <item name="green" type="color">#ff24CE38</item>
 </resources>

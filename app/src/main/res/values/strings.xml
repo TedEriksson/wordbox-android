@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WordBox</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_create_box">Create a Box</string>
+    <string name="next_word">Press enter for next word</string>
 </resources>

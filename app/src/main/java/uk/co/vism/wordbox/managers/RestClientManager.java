@@ -7,11 +7,8 @@ import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.network.RestClient;
 import uk.co.vism.wordbox.network.RestClient_;
 
-
-/**
- * Created by Ted Eriksson on 30/03/15.
- */
-public class RestClientManager {
+public class RestClientManager
+{
     RestClient restClient;
 
     private static RestClientManager instance = null;
@@ -20,14 +17,17 @@ public class RestClientManager {
         restClient = new RestClient_(context);
     }
 
-    public static RestClientManager getInstance(Context context) {
-        if (instance == null) {
+    public static RestClientManager getInstance(Context context)
+    {
+        if (instance == null)
+        {
             instance = new RestClientManager(context);
         }
         return instance;
     }
 
-    public static void updateUser(Context context, Realm realm, int id) {
+    public static void updateUser(Context context, Realm realm, int id)
+    {
         RestClientManager instance = getInstance(context);
 
         realm.beginTransaction();

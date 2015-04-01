@@ -13,10 +13,10 @@ import java.util.Arrays;
 
 import uk.co.vism.wordbox.R;
 
-@EFragment(R.layout.fragment_earn)
-public class EarnFragment extends Fragment
+@EFragment(R.layout.fragment_friends)
+public class FriendsFragment extends Fragment
 {
-    public static final String NAME = "Earn";
+    public static final String NAME = "Friends";
 
     @ViewById(R.id.earnListView)
     ListView list;
