@@ -1,20 +1,18 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
-        layout="@layout/friend_row"
-        android:id="@+id/friendRow"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true" />
+        android:layout_height="wrap_content"
+        layout="@layout/friend_row"
+        android:id="@+id/friendRow" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/friendRow"
         android:id="@+id/friendsList"
-        android:scrollbars="vertical">
-    </android.support.v7.widget.RecyclerView>
-</RelativeLayout>
+        android:scrollbars="vertical" />
+</LinearLayout>
