@@ -3,6 +3,7 @@
     package="uk.co.vism.wordbox" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -20,8 +21,21 @@
         </activity>
         <activity
             android:name=".activities.CreateBoxActivity_"
-            android:parentActivityName=".activities.HomeActivity_"
-            android:label="@string/title_activity_create_box" >
+            android:label="@string/title_activity_create_box"
+            android:parentActivityName=".activities.HomeActivity_" >
+        </activity>
+        <activity
+            android:name=".activities.RequestsActivity_"
+            android:label="@string/title_activity_requests"
+            android:parentActivityName=".activities.HomeActivity_" >
+        </activity>
+        <activity
+            android:name=".activities.RecordWord_"
+            android:label="@string/title_activity_record_word"
+            android:parentActivityName=".activities.RequestsActivity_" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uk.co.vism.wordbox.activities.RequestsActivity_" />
         </activity>
     </application>
 

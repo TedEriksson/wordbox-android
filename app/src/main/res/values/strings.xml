@@ -5,5 +5,12 @@
     <string name="title_activity_create_box">Create a Box</string>
     <string name="next_word">Press enter for next word</string>
     <string name="new_word_done">Done</string>
+    <string name="view_requests">View</string>
+    <string name="accept_request">Accept</string>
+    <string name="reject_request">Reject</string>
     <string name="add_invite_friend">Add/Invite New Friend</string>
+    <string name="title_activity_requests">Requests</string>
+    <string name="title_activity_record_word">Record Word</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
