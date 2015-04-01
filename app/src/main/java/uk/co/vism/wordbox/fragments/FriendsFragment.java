@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -102,7 +103,20 @@ public class FriendsFragment extends Fragment
 
     private void addByUsername()
     {
+        final EditText username = new EditText(getActivity());
 
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Username")
+                .setView(username)
+                .setPositiveButton("Send request", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        Toast.makeText(getActivity(), "" + username.getText(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
     }
 
     private void addByEmail()
