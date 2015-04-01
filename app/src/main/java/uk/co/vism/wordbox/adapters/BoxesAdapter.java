@@ -1,4 +1,4 @@
-package uk.co.vism.wordbox;
+package uk.co.vism.wordbox.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import io.realm.RealmList;
+import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.models.Sentence;
+import uk.co.vism.wordbox.models.Word;
 
 public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
 {
-    private ArrayList<Discover> discovers;
+    private RealmList<Sentence> sentences;
 
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -30,9 +33,9 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
         }
     }
 
-    public BoxesAdapter(ArrayList<Discover> discovers)
+    public BoxesAdapter(RealmList<Sentence> sentences)
     {
-        this.discovers = discovers;
+        this.sentences = sentences;
     }
 
     @Override
@@ -45,9 +48,18 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i)
     {
-        Discover act = discovers.get(i);
-        viewHolder.title.setText(act.desc);
-        viewHolder.hearts.setText(act.hearts + " hearts");
+        Sentence sentence = sentences.get(i);
+        RealmList<Word> words = sentence.getWords();
+
+        StringBuilder title = new StringBuilder();
+        for(Word word : words)
+        {
+            title.append(word.getText());
+            title.append(" ");
+        }
+
+        viewHolder.title.setText(title.toString());
+        viewHolder.hearts.setText(sentence.getHearts() + " hearts");
 
         Picasso.with(viewHolder.hearts.getContext())
                 .load(R.mipmap.ic_launcher)
@@ -58,6 +70,6 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
     @Override
     public int getItemCount()
     {
-        return discovers.size();
+        return sentences.size();
     }
 }

@@ -7,6 +7,14 @@ public class Word extends RealmObject
     private String text;
     private int order;
 
+    public Word() {}
+
+    public Word(int order, String text)
+    {
+        setOrder(order);
+        setText(text);
+    }
+
     public String getText()
     {
         return text;

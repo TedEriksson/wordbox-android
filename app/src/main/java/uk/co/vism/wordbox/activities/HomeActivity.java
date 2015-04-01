@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -14,7 +13,7 @@ import org.androidannotations.annotations.ViewById;
 
 import io.realm.Realm;
 import uk.co.vism.wordbox.R;
-import uk.co.vism.wordbox.ViewPagerAdapter;
+import uk.co.vism.wordbox.adapters.ViewPagerAdapter;
 import uk.co.vism.wordbox.fragments.BoxesFragment;
 
 import uk.co.vism.wordbox.fragments.BoxesFragment_;

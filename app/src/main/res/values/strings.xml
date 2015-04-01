@@ -4,4 +4,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_create_box">Create a Box</string>
     <string name="next_word">Press enter for next word</string>
+    <string name="new_word_done">Done</string>
+    <string name="add_invite_friend">Add/Invite New Friend</string>
 </resources>

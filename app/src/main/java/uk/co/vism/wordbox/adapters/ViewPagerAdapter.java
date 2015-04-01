@@ -1,4 +1,4 @@
-package uk.co.vism.wordbox;
+package uk.co.vism.wordbox.adapters;
 
 import android.app.ActionBar;
 import android.app.Activity;

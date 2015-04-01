@@ -8,12 +8,13 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-import uk.co.vism.wordbox.BoxesAdapter;
-import uk.co.vism.wordbox.Discover;
+import io.realm.RealmList;
+import uk.co.vism.wordbox.adapters.BoxesAdapter;
 import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.models.Sentence;
+import uk.co.vism.wordbox.models.Word;
 
 @EFragment(R.layout.fragment_boxes)
 public class BoxesFragment extends Fragment
@@ -22,6 +23,7 @@ public class BoxesFragment extends Fragment
 
     @ViewById(R.id.boxesRecyclerView)
     public RecyclerView recyclerView;
+
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -31,20 +33,30 @@ public class BoxesFragment extends Fragment
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new BoxesAdapter(getDiscovers());
+        adapter = new BoxesAdapter(getSentences());
         recyclerView.setAdapter(adapter);
     }
 
-    private ArrayList<Discover> getDiscovers()
+    private RealmList<Sentence> getSentences()
     {
-        ArrayList<Discover> disc = new ArrayList<>();
+        RealmList<Sentence> sentences = new RealmList<>();
         Random rand = new Random(42);
 
         for(int i = 0; i < 50; i ++)
         {
-            disc.add(new Discover("aaaa", rand.nextInt(30)));
+            RealmList<Word> words = new RealmList<>();
+            words.add(new Word(0, "hey"));
+            words.add(new Word(1, "botond"));
+            words.add(new Word(2, "you're"));
+            words.add(new Word(3, "cool"));
+
+            Sentence sentence = new Sentence();
+            sentence.setWords(words);
+            sentence.setHearts(rand.nextInt(50));
+
+            sentences.add(sentence);
         }
 
-        return disc;
+        return sentences;
     }
 }

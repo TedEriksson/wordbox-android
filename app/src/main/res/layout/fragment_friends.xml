@@ -1,22 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <TextView
+    <include
+        layout="@layout/friend_row"
+        android:id="@+id/friendRow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true" />
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="gravity"
-        android:background="@android:color/holo_purple"
-        android:textSize="24sp"
-        android:padding="5dp"
-        android:text="16 Credits"/>
-
-    <ListView
-        android:layout_margin="5dp"
-        android:background="@android:color/holo_blue_light"
-        android:id="@+id/earnListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
-</LinearLayout>
+        android:layout_below="@+id/friendRow"
+        android:id="@+id/friendsList"
+        android:scrollbars="vertical">
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>

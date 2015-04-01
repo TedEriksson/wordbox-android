@@ -1,38 +1,55 @@
 package uk.co.vism.wordbox.fragments;
 
 import android.support.v4.app.Fragment;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
+import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.adapters.FriendsAdapter;
+import uk.co.vism.wordbox.models.User;
 
 @EFragment(R.layout.fragment_friends)
 public class FriendsFragment extends Fragment
 {
     public static final String NAME = "Friends";
 
-    @ViewById(R.id.earnListView)
-    ListView list;
-    private ArrayList<String> items;
-    private ArrayAdapter<String> adapter;
+    @ViewById(R.id.friendsList)
+    public RecyclerView friendsList;
+
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @AfterViews
     void init()
     {
-        String[] values = new String[]{ "Hello", "Yes", "Balls", "Programming", "Phone", "Can", "Cannot", "No", "Fuck", "Off", "This", "Is", "Getting", "Boring", "And", "Tedious" };
-        items = new ArrayList<>();
-        items.addAll(Arrays.asList(values));
+        layoutManager = new LinearLayoutManager(getActivity());
+        friendsList.setLayoutManager(layoutManager);
 
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, items);
-        list.setAdapter(adapter);
+        adapter = new FriendsAdapter(getFriends());
+        friendsList.setAdapter(adapter);
+    }
 
-        adapter.notifyDataSetChanged();
+    private RealmList<User> getFriends()
+    {
+        RealmList<User> users = new RealmList<>();
+        String[] names = new String[]{ "Ted", "Sophie", "Adam", "John", "Stefan" };
+
+        User user;
+        for(String name : names)
+        {
+            user = new User();
+            user.setFirstName(name);
+            users.add(user);
+        }
+
+        return users;
     }
 }
