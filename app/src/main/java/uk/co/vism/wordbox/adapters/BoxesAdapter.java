@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.models.Sentence;
@@ -16,7 +19,7 @@ import uk.co.vism.wordbox.models.Word;
 
 public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
 {
-    private RealmList<Sentence> sentences;
+    private List<Sentence> sentences;
 
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
@@ -33,7 +36,7 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
         }
     }
 
-    public BoxesAdapter(RealmList<Sentence> sentences)
+    public BoxesAdapter(ArrayList<Sentence> sentences)
     {
         this.sentences = sentences;
     }

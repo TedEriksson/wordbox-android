@@ -4,9 +4,13 @@ import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.BeforeTextChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -32,6 +36,11 @@ public class HomeActivity extends FragmentActivity
 {
     @ViewById(R.id.viewPager)
     ViewPager viewPager;
+    @ViewById(R.id.requestRow)
+    RelativeLayout requestRow;
+    @ViewById(R.id.requestCount)
+    TextView requestCount;
+
     private ViewPagerAdapter adapter;
 
     @AfterViews
@@ -40,13 +49,19 @@ public class HomeActivity extends FragmentActivity
         adapter = new ViewPagerAdapter(viewPager, HomeActivity.this, getSupportFragmentManager());
         setupActionBar();
 
+        // if there are any pending requests
+        if(true)
+            requestCount.setText("You have 2 requests pending");
+        else
+            requestRow.setVisibility(LinearLayout.GONE);
+
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(adapter);
         viewPager.setCurrentItem(1);
 
         adapter.notifyDataSetChanged();
 
-        //downloadUser();
+        downloadUser();
     }
 
     private void setupActionBar()
@@ -71,23 +86,34 @@ public class HomeActivity extends FragmentActivity
         CreateBoxActivity_.intent(HomeActivity.this).start();
     }
 
+    @Click
+    public void viewRequests()
+    {
+        RequestsActivity_.intent(HomeActivity.this).start();
+    }
+
     @Background
     void downloadUser()
     {
         Realm.deleteRealmFile(this);
-
-        // This is the database instance
         Realm realm = Realm.getInstance(this);
 
-        // Update user on app launch (this will get all info about them
-        RestClientManager.updateUser(this, realm, 1);
+        // try with resources - the .close() method will automatically be called after the code block terminates
+        try
+        {
+            // Update user on app launch (this will get all info about them)
+            RestClientManager.updateUser(this, realm, 1);
 
-        // Get updated User from database.
-        User user = UserManager.getUserById(realm, 1);
-        // Showing that the User is usable
-        Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
+            // Get updated User from database
+            //User user = UserManager.getUserById(realm, 1);
 
-        // MUST close the instance when finished with it
-        realm.close();
+            // Showing that the User is usable
+            //Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
+            //Log.d("eeee", "sentence: " + user.getSentences().get(0).getId());
+        }
+        finally
+        {
+            realm.close();
+        }
     }
 }

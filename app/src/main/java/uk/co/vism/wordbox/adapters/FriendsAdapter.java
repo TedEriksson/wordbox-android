@@ -43,7 +43,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(ViewHolder viewHolder, int i)
     {
         User friend = friends.get(i);
-        viewHolder.name.setText(friend.getFirstName());
+        viewHolder.name.setText(friend.getUsername());
 
         Picasso.with(viewHolder.name.getContext())
                 .load(R.mipmap.ic_launcher)

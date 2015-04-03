@@ -9,12 +9,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import io.realm.RealmList;
 import io.realm.RealmObject;
 import uk.co.vism.wordbox.R;
-import uk.co.vism.wordbox.activities.RecordWord;
 import uk.co.vism.wordbox.activities.RecordWord_;
-import uk.co.vism.wordbox.models.Sentence;
 import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.models.Word;
 
@@ -73,7 +70,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         else if(obj.getClass().equals(User.class))
         {
             User user = (User)obj;
-            viewHolder.title.setText(user.getFirstName());
+            viewHolder.title.setText(user.getUsername());
             viewHolder.title.setBackgroundColor(viewHolder.title.getResources().getColor(R.color.green));
             viewHolder.description.setText("Add friend?");
         }

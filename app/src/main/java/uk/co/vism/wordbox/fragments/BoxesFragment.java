@@ -8,6 +8,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import io.realm.RealmList;
@@ -22,13 +23,13 @@ public class BoxesFragment extends Fragment
     public static final String NAME = "Boxes";
 
     @ViewById(R.id.boxesRecyclerView)
-    public RecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     @AfterViews
-    public void init()
+    void init()
     {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -37,9 +38,9 @@ public class BoxesFragment extends Fragment
         recyclerView.setAdapter(adapter);
     }
 
-    private RealmList<Sentence> getSentences()
+    public ArrayList<Sentence> getSentences()
     {
-        RealmList<Sentence> sentences = new RealmList<>();
+        ArrayList<Sentence> sentences = new ArrayList<>();
         Random rand = new Random(42);
 
         for(int i = 0; i < 50; i ++)

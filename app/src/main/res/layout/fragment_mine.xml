@@ -1,10 +1,18 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/yoursScrollView"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
+    <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="yours, bitches" />
-</ScrollView>
+        layout="@layout/friend_row"
+        android:id="@+id/thisIsMe" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mySentencesList"
+        android:scrollbars="vertical" />
+</LinearLayout>

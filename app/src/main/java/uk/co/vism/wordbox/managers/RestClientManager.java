@@ -1,6 +1,7 @@
 package uk.co.vism.wordbox.managers;
 
 import android.content.Context;
+import android.util.Log;
 
 import io.realm.Realm;
 import uk.co.vism.wordbox.models.User;
@@ -33,6 +34,7 @@ public class RestClientManager
         realm.beginTransaction();
 
         String json = instance.restClient.getUser(id).toString();
+        Log.d("json", json);
         realm.createOrUpdateObjectFromJson(User.class, json);
 
         realm.commitTransaction();

@@ -6,9 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
@@ -18,7 +15,6 @@ import org.androidannotations.annotations.ViewById;
 
 import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
-import uk.co.vism.wordbox.activities.RequestsActivity_;
 import uk.co.vism.wordbox.adapters.FriendsAdapter;
 import uk.co.vism.wordbox.models.User;
 
@@ -29,10 +25,6 @@ public class FriendsFragment extends Fragment
 
     @ViewById(R.id.friendsList)
     RecyclerView friendsList;
-    @ViewById(R.id.requestRow)
-    RelativeLayout requestRow;
-    @ViewById(R.id.requestCount)
-    TextView requestCount;
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -42,12 +34,6 @@ public class FriendsFragment extends Fragment
     {
         layoutManager = new LinearLayoutManager(getActivity());
         friendsList.setLayoutManager(layoutManager);
-
-        // if there are any pending requests
-        if(true)
-            requestCount.setText("You have 2 requests pending");
-        else
-            requestRow.setVisibility(LinearLayout.GONE);
 
         adapter = new FriendsAdapter(getFriends());
         friendsList.setAdapter(adapter);
@@ -62,17 +48,11 @@ public class FriendsFragment extends Fragment
         for(String name : names)
         {
             user = new User();
-            user.setFirstName(name);
+            user.setUsername(name);
             users.add(user);
         }
 
         return users;
-    }
-
-    @Click
-    public void viewRequests()
-    {
-        RequestsActivity_.intent(getActivity()).start();
     }
 
     @Click

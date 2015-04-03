@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import io.realm.RealmObject;
 import uk.co.vism.wordbox.R;
-import uk.co.vism.wordbox.adapters.FriendsAdapter;
 import uk.co.vism.wordbox.adapters.RequestsAdapter;
 import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.models.Word;
@@ -44,7 +43,7 @@ public class RequestsActivity extends Activity
         requests.add(word);
 
         User user = new User();
-        user.setFirstName("Sophie");
+        user.setUsername("Sophie");
         requests.add(user);
 
         return requests;
