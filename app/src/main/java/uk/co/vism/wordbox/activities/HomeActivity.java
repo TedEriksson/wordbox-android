@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.BeforeTextChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -55,13 +54,16 @@ public class HomeActivity extends FragmentActivity
         else
             requestRow.setVisibility(LinearLayout.GONE);
 
+        setupViewPager();
+        downloadUser();
+    }
+
+    private void setupViewPager()
+    {
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(adapter);
         viewPager.setCurrentItem(1);
-
         adapter.notifyDataSetChanged();
-
-        downloadUser();
     }
 
     private void setupActionBar()
@@ -96,24 +98,19 @@ public class HomeActivity extends FragmentActivity
     void downloadUser()
     {
         Realm.deleteRealmFile(this);
-        Realm realm = Realm.getInstance(this);
 
         // try with resources - the .close() method will automatically be called after the code block terminates
-        try
+        try(Realm realm = Realm.getInstance(this))
         {
             // Update user on app launch (this will get all info about them)
             RestClientManager.updateUser(this, realm, 1);
 
             // Get updated User from database
-            //User user = UserManager.getUserById(realm, 1);
+            User user = UserManager.getUserById(realm, 1);
 
             // Showing that the User is usable
-            //Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
-            //Log.d("eeee", "sentence: " + user.getSentences().get(0).getId());
-        }
-        finally
-        {
-            realm.close();
+            Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
+            Log.d("eeee", "sentence: " + user.getSentences().get(0).getId());
         }
     }
 }
