@@ -140,9 +140,31 @@ public class FriendsFragment extends Fragment
                 .show();
     }
 
+    /**
+     * Prompts the user to enter an email address, and launched the default email client with to,
+     * subject, and a default invitation message
+     */
     private void addByEmail()
     {
+        final EditText username = new EditText(getActivity());
+        username.setTextColor(getResources().getColor(android.R.color.black));
 
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Username")
+                .setView(username)
+                .setPositiveButton("Send request", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{ username.getText().toString() });
+                        i.putExtra(android.content.Intent.EXTRA_SUBJECT, "Let's get Boxy. WordBoxy");
+                        i.putExtra(android.content.Intent.EXTRA_TEXT, "Default invitation text");
+                        startActivity(Intent.createChooser(i, "Send email"));
+                    }
+                })
+                .show();
     }
 
     /**

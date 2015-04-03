@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import io.realm.RealmObject;
 import uk.co.vism.wordbox.R;
-import uk.co.vism.wordbox.activities.RecordWord_;
+import uk.co.vism.wordbox.activities.RecordWordActivity_;
 import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.models.Word;
 
@@ -63,7 +63,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 @Override
                 public void onClick(View v)
                 {
-                    RecordWord_.intent(viewHolder.title.getContext()).start();
+                    RecordWordActivity_.intent(viewHolder.title.getContext()).start();
                 }
             });
         }
