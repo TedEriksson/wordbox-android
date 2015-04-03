@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import org.androidannotations.annotations.Click;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,8 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
         public ImageView image;
         public TextView title;
         public TextView hearts;
+        public ImageView heartBox;
+        public ImageView shareBox;
 
         public ViewHolder(View v)
         {
@@ -33,13 +38,12 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
             this.image  = (ImageView)v.findViewById(R.id.boxesCardImage);
             this.title  = (TextView)v.findViewById(R.id.boxesCardTitle);
             this.hearts = (TextView)v.findViewById(R.id.boxesCardHearts);
+            this.heartBox = (ImageView)v.findViewById(R.id.heartBox);
+            this.shareBox = (ImageView)v.findViewById(R.id.shareBox);
         }
     }
 
-    public BoxesAdapter(ArrayList<Sentence> sentences)
-    {
-        this.sentences = sentences;
-    }
+    public BoxesAdapter(ArrayList<Sentence> sentences) { this.sentences = sentences; }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
@@ -49,7 +53,7 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i)
+    public void onBindViewHolder(final ViewHolder viewHolder, int i)
     {
         Sentence sentence = sentences.get(i);
         RealmList<Word> words = sentence.getWords();
@@ -63,6 +67,22 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
 
         viewHolder.title.setText(title.toString());
         viewHolder.hearts.setText(sentence.getHearts() + " hearts");
+        viewHolder.heartBox.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(viewHolder.title.getContext(), "Heart or unheart", Toast.LENGTH_LONG).show();
+            }
+        });
+        viewHolder.shareBox.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(viewHolder.title.getContext(), "Share box", Toast.LENGTH_LONG).show();
+            }
+        });
 
         Picasso.with(viewHolder.hearts.getContext())
                 .load(R.mipmap.ic_launcher)

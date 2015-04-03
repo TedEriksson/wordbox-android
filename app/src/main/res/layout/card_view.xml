@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
+    android:clickable="true"
     card_view:cardCornerRadius="4dp">
 
     <RelativeLayout
@@ -37,13 +38,15 @@
             android:id="@+id/boxesCardHearts"
             android:layout_below="@id/cardFrameLayout"
             android:layout_alignParentBottom="true"
+            android:clickable="true"
             android:padding="10dp" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cardFrameLayout"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
+            android:layout_toStartOf="@+id/shareBox"
+            android:clickable="true"
             android:id="@+id/heartBox"
             android:background="@android:drawable/ic_menu_help" />
         <ImageView
@@ -51,7 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/cardFrameLayout"
             android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@+id/heartBox"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"
             android:id="@+id/shareBox"
             android:background="@android:drawable/ic_menu_help" />
     </RelativeLayout>
