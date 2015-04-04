@@ -17,8 +17,7 @@ import uk.co.vism.wordbox.managers.SentenceManager;
 import uk.co.vism.wordbox.models.Word;
 
 @EActivity(R.layout.activity_create_box)
-public class CreateBoxActivity extends Activity
-{
+public class CreateBoxActivity extends Activity {
     private static final int ID_PREFIX = 10000;
 
     @ViewById(R.id.wordList)
@@ -30,13 +29,10 @@ public class CreateBoxActivity extends Activity
     private EditText word;
     private SentenceManager box;
 
-    private TextView.OnEditorActionListener actionListener = new TextView.OnEditorActionListener()
-    {
+    private TextView.OnEditorActionListener actionListener = new TextView.OnEditorActionListener() {
         @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-        {
-            if(actionId == EditorInfo.IME_ACTION_NEXT)
-            {
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 box.addWord(new Word(v.getId() - ID_PREFIX, v.getText().toString()));
                 createEditWordRow();
                 return true;
@@ -47,17 +43,15 @@ public class CreateBoxActivity extends Activity
     };
 
     @AfterViews
-    void init()
-    {
+    void init() {
         box = new SentenceManager();
         createEditWordRow();
     }
 
-    private void createEditWordRow()
-    {
+    private void createEditWordRow() {
         wordNumber.setText(box.count() + " words");
 
-        word = (EditText)LayoutInflater.from(CreateBoxActivity.this).inflate(R.layout.new_word, null);
+        word = (EditText) LayoutInflater.from(CreateBoxActivity.this).inflate(R.layout.new_word, null);
 
         word.setId(ID_PREFIX + box.count());
         word.requestFocus();

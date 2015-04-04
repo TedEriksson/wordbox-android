@@ -13,35 +13,32 @@ import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.models.User;
 
-public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder>
-{
+public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
     private RealmList<User> friends;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView name;
 
-        public ViewHolder(View v)
-        {
+        public ViewHolder(View v) {
             super(v);
-            this.image = (ImageView)v.findViewById(R.id.friendImage);
-            this.name  = (TextView)v.findViewById(R.id.friendName);
+            this.image = (ImageView) v.findViewById(R.id.friendImage);
+            this.name = (TextView) v.findViewById(R.id.friendName);
         }
     }
 
-    public FriendsAdapter(RealmList<User> friends) { this.friends = friends; }
+    public FriendsAdapter(RealmList<User> friends) {
+        this.friends = friends;
+    }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.friend_row, viewGroup, false);
         return new ViewHolder(item);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i)
-    {
+    public void onBindViewHolder(ViewHolder viewHolder, int i) {
         User friend = friends.get(i);
         viewHolder.name.setText(friend.getUsername());
 
@@ -52,8 +49,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return friends.size();
     }
 }

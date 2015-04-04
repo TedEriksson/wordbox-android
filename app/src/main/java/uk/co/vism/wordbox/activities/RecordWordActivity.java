@@ -17,8 +17,7 @@ import java.io.IOException;
 import uk.co.vism.wordbox.R;
 
 @EActivity(R.layout.activity_record_word)
-public class RecordWordActivity extends Activity implements View.OnClickListener, SurfaceHolder.Callback
-{
+public class RecordWordActivity extends Activity implements View.OnClickListener, SurfaceHolder.Callback {
     @ViewById(R.id.cameraSurfaceView)
     SurfaceView cameraView;
 
@@ -27,8 +26,7 @@ public class RecordWordActivity extends Activity implements View.OnClickListener
     private boolean recording = false;
 
     @AfterViews
-    void init()
-    {
+    void init() {
         recorder = new MediaRecorder();
         initRecorder();
 
@@ -39,8 +37,7 @@ public class RecordWordActivity extends Activity implements View.OnClickListener
         cameraView.setOnClickListener(RecordWordActivity.this);
     }
 
-    private void initRecorder()
-    {
+    private void initRecorder() {
         CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
 
         recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
@@ -51,26 +48,32 @@ public class RecordWordActivity extends Activity implements View.OnClickListener
         recorder.setMaxFileSize(5000000);   // approximately 5 megabytes
     }
 
-    private void prepareRecorder()
-    {
+    private void prepareRecorder() {
         recorder.setPreviewDisplay(holder.getSurface());
 
-        try                             { recorder.prepare(); }
-        catch(IllegalStateException e)  { e.printStackTrace(); finish(); }
-        catch(IOException e)            { e.printStackTrace(); finish(); }
+        try {
+            recorder.prepare();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            finish();
+        } catch (IOException e) {
+            e.printStackTrace();
+            finish();
+        }
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) { prepareRecorder(); }
+    public void surfaceCreated(SurfaceHolder holder) {
+        prepareRecorder();
+    }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder)
-    {
-        if(recording)
-        {
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        if (recording) {
             recorder.stop();
             recording = false;
         }
@@ -80,24 +83,21 @@ public class RecordWordActivity extends Activity implements View.OnClickListener
     }
 
     @Override
-    public void onClick(View v)
-    {
-        if(recording)
-        {
+    public void onClick(View v) {
+        if (recording) {
             recording = false;
             recorder.stop();
 
             initRecorder();
             prepareRecorder();
-        }
-        else
-        {
-            try
-            {
+        } else {
+            try {
                 recording = true;
                 recorder.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+                recording = false;
             }
-            catch(Exception e)      { e.printStackTrace(); recording = false; }
         }
     }
 }

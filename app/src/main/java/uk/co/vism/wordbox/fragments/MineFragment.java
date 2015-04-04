@@ -3,7 +3,6 @@ package uk.co.vism.wordbox.fragments;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,18 +15,13 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.adapters.BoxesAdapter;
 import uk.co.vism.wordbox.managers.RestClientManager;
-import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.Sentence;
-import uk.co.vism.wordbox.models.User;
-import uk.co.vism.wordbox.models.Word;
 
 @EFragment(R.layout.fragment_mine)
-public class MineFragment extends Fragment
-{
+public class MineFragment extends Fragment {
     public static final String NAME = "Mine";
 
     @ViewById(R.id.friendImage)
@@ -42,8 +36,7 @@ public class MineFragment extends Fragment
     private ArrayList<Sentence> sentences;
 
     @AfterViews
-    void init()
-    {
+    void init() {
         sentences = new ArrayList<>();
         myName.setText("Botond");
 
@@ -57,22 +50,19 @@ public class MineFragment extends Fragment
     }
 
     @Background
-    public void getSentences()
-    {
-        try(Realm realm = Realm.getInstance(getActivity()))
-        {
+    public void getSentences() {
+        try (Realm realm = Realm.getInstance(getActivity())) {
             RestClientManager.updateUser(getActivity(), realm, 1);
 
             // this won't work because fuck you, that's why
             //User user = UserManager.getUserById(realm, 1);
             //for(int i = 0; i < user.getSentences().size(); i++)
-                //sentences.add(user.getSentences().get(i));
+            //sentences.add(user.getSentences().get(i));
         }
     }
 
     @UiThread
-    void finished()
-    {
+    void finished() {
         adapter.notifyItemRangeInserted(0, sentences.size());
     }
 }

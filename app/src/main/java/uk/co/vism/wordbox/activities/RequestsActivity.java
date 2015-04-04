@@ -1,6 +1,5 @@
 package uk.co.vism.wordbox.activities;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +18,7 @@ import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.models.Word;
 
 @EActivity(R.layout.activity_requests)
-public class RequestsActivity extends ActionBarActivity
-{
+public class RequestsActivity extends ActionBarActivity {
     @ViewById(R.id.requestsRecyclerView)
     RecyclerView requestsList;
 
@@ -31,8 +29,7 @@ public class RequestsActivity extends ActionBarActivity
     private RecyclerView.LayoutManager layoutManager;
 
     @AfterViews
-    void init()
-    {
+    void init() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -43,8 +40,7 @@ public class RequestsActivity extends ActionBarActivity
         requestsList.setAdapter(adapter);
     }
 
-    private ArrayList<? extends RealmObject> getRequests()
-    {
+    private ArrayList<? extends RealmObject> getRequests() {
         ArrayList<RealmObject> requests = new ArrayList<>();
 
         Word word = new Word(0, "Oh");

@@ -24,8 +24,7 @@ import uk.co.vism.wordbox.adapters.FriendsAdapter;
 import uk.co.vism.wordbox.models.User;
 
 @EFragment(R.layout.fragment_friends)
-public class FriendsFragment extends Fragment
-{
+public class FriendsFragment extends Fragment {
     public static final String NAME = "Friends";
     public static final int PICK_CONTACT = 108;
 
@@ -36,8 +35,7 @@ public class FriendsFragment extends Fragment
     private RecyclerView.LayoutManager layoutManager;
 
     @AfterViews
-    void init()
-    {
+    void init() {
         layoutManager = new LinearLayoutManager(getActivity());
         friendsList.setLayoutManager(layoutManager);
 
@@ -46,22 +44,18 @@ public class FriendsFragment extends Fragment
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch(requestCode)
-        {
+        switch (requestCode) {
             case PICK_CONTACT:
-                if(resultCode == Activity.RESULT_OK)
-                {
+                if (resultCode == Activity.RESULT_OK) {
                     // grab the contact selected
                     Uri contact = data.getData();
 
                     // grab details about the contact selected
                     Cursor cursor = getActivity().getContentResolver().query(contact, null, null, null, null);
-                    if(cursor.moveToFirst())
-                    {
+                    if (cursor.moveToFirst()) {
                         String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
                         Toast.makeText(getActivity(), name, Toast.LENGTH_SHORT).show();
                     }
@@ -70,14 +64,12 @@ public class FriendsFragment extends Fragment
         }
     }
 
-    private RealmList<User> getFriends()
-    {
+    private RealmList<User> getFriends() {
         RealmList<User> users = new RealmList<>();
-        String[] names = new String[]{ "Ted", "Sophie", "Adam", "John", "Stefan" };
+        String[] names = new String[]{"Ted", "Sophie", "Adam", "John", "Stefan"};
 
         User user;
-        for(String name : names)
-        {
+        for (String name : names) {
             user = new User();
             user.setUsername(name);
             users.add(user);
@@ -92,16 +84,13 @@ public class FriendsFragment extends Fragment
      * to the below methods
      */
     @Click
-    public void friendRow()
-    {
+    public void friendRow() {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Add friend by...")
-                .setItems(new CharSequence[]{ "Username", "Email", "Contact" }, new DialogInterface.OnClickListener() {
+                .setItems(new CharSequence[]{"Username", "Email", "Contact"}, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        switch(which)
-                        {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
                             case 0:
                                 addByUsername();
                                 break;
@@ -121,19 +110,16 @@ public class FriendsFragment extends Fragment
      * Attempts to find the user by username, and adds it as a friend
      * Needs to query server for user, handle not found, and if found, add it to the list
      */
-    private void addByUsername()
-    {
+    private void addByUsername() {
         final EditText username = new EditText(getActivity());
         username.setTextColor(getResources().getColor(android.R.color.black));
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Username")
                 .setView(username)
-                .setPositiveButton("Send request", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Send request", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getActivity(), "" + username.getText(), Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -144,21 +130,18 @@ public class FriendsFragment extends Fragment
      * Prompts the user to enter an email address, and launched the default email client with to,
      * subject, and a default invitation message
      */
-    private void addByEmail()
-    {
+    private void addByEmail() {
         final EditText username = new EditText(getActivity());
         username.setTextColor(getResources().getColor(android.R.color.black));
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Username")
                 .setView(username)
-                .setPositiveButton("Send request", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Send request", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         Intent i = new Intent(Intent.ACTION_SEND);
-                        i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{ username.getText().toString() });
+                        i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{username.getText().toString()});
                         i.putExtra(android.content.Intent.EXTRA_SUBJECT, "Let's get Boxy. WordBoxy");
                         i.putExtra(android.content.Intent.EXTRA_TEXT, "Default invitation text");
                         startActivity(Intent.createChooser(i, "Send email"));
@@ -170,8 +153,7 @@ public class FriendsFragment extends Fragment
     /**
      * Opens the contact picker and returns the selected contact, which is then picked up by onActivityResult
      */
-    private void addByContact()
-    {
+    private void addByContact() {
         Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(i, PICK_CONTACT);
     }

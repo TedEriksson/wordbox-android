@@ -10,8 +10,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.androidannotations.annotations.Click;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,66 +18,58 @@ import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.models.Sentence;
 import uk.co.vism.wordbox.models.Word;
 
-public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
-{
+public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder> {
     private List<Sentence> sentences;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView title;
         public TextView hearts;
         public ImageView heartBox;
         public ImageView shareBox;
 
-        public ViewHolder(View v)
-        {
+        public ViewHolder(View v) {
             super(v);
-            this.image  = (ImageView)v.findViewById(R.id.boxesCardImage);
-            this.title  = (TextView)v.findViewById(R.id.boxesCardTitle);
-            this.hearts = (TextView)v.findViewById(R.id.boxesCardHearts);
-            this.heartBox = (ImageView)v.findViewById(R.id.heartBox);
-            this.shareBox = (ImageView)v.findViewById(R.id.shareBox);
+            this.image = (ImageView) v.findViewById(R.id.boxesCardImage);
+            this.title = (TextView) v.findViewById(R.id.boxesCardTitle);
+            this.hearts = (TextView) v.findViewById(R.id.boxesCardHearts);
+            this.heartBox = (ImageView) v.findViewById(R.id.heartBox);
+            this.shareBox = (ImageView) v.findViewById(R.id.shareBox);
         }
     }
 
-    public BoxesAdapter(ArrayList<Sentence> sentences) { this.sentences = sentences; }
+    public BoxesAdapter(ArrayList<Sentence> sentences) {
+        this.sentences = sentences;
+    }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
-    {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View item = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, viewGroup, false);
         return new ViewHolder(item);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, int i)
-    {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
         Sentence sentence = sentences.get(i);
         RealmList<Word> words = sentence.getWords();
 
         StringBuilder title = new StringBuilder();
-        for(Word word : words)
-        {
+        for (Word word : words) {
             title.append(word.getText());
             title.append(" ");
         }
 
         viewHolder.title.setText(title.toString());
         viewHolder.hearts.setText(sentence.getHearts() + " hearts");
-        viewHolder.heartBox.setOnClickListener(new View.OnClickListener()
-        {
+        viewHolder.heartBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Toast.makeText(viewHolder.title.getContext(), "Heart or unheart", Toast.LENGTH_LONG).show();
             }
         });
-        viewHolder.shareBox.setOnClickListener(new View.OnClickListener()
-        {
+        viewHolder.shareBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Toast.makeText(viewHolder.title.getContext(), "Share box", Toast.LENGTH_LONG).show();
             }
         });
@@ -91,8 +81,7 @@ public class BoxesAdapter extends RecyclerView.Adapter<BoxesAdapter.ViewHolder>
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return sentences.size();
     }
 }
