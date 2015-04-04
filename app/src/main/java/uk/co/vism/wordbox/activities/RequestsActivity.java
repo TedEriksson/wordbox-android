@@ -1,8 +1,10 @@
 package uk.co.vism.wordbox.activities;
 
 import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -17,10 +19,13 @@ import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.models.Word;
 
 @EActivity(R.layout.activity_requests)
-public class RequestsActivity extends Activity
+public class RequestsActivity extends ActionBarActivity
 {
     @ViewById(R.id.requestsRecyclerView)
     RecyclerView requestsList;
+
+    @ViewById(R.id.toolbar)
+    Toolbar toolbar;
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -28,6 +33,9 @@ public class RequestsActivity extends Activity
     @AfterViews
     void init()
     {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         layoutManager = new LinearLayoutManager(getApplicationContext());
         requestsList.setLayoutManager(layoutManager);
 

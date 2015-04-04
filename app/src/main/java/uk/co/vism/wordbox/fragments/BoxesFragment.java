@@ -30,6 +30,7 @@ public class BoxesFragment extends Fragment
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
+
     @AfterViews
     void init()
     {

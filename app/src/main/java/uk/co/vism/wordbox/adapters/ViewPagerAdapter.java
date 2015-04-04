@@ -9,25 +9,38 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.astuetz.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter implements ActionBar.TabListener, ViewPager.OnPageChangeListener
+import uk.co.vism.wordbox.fragments.BoxesFragment;
+import uk.co.vism.wordbox.fragments.BoxesFragment_;
+import uk.co.vism.wordbox.fragments.FriendsFragment;
+import uk.co.vism.wordbox.fragments.FriendsFragment_;
+import uk.co.vism.wordbox.fragments.MineFragment;
+import uk.co.vism.wordbox.fragments.MineFragment_;
+
+public class ViewPagerAdapter extends FragmentPagerAdapter
 {
-    private ArrayList<TabInfo> tabs;
     private Context context;
     private ViewPager viewPager;
 
-    final class TabInfo
-    {
-        private final Class<?> aClass;
-        private final Bundle args;
-
-        TabInfo(Class<?> aClass, Bundle args)
-        {
-            this.aClass = aClass;
-            this.args = args;
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return BoxesFragment.NAME;
+            case 1:
+                return FriendsFragment.NAME;
+            case 2:
+                return MineFragment.NAME;
         }
+
+        return "";
     }
 
     public ViewPagerAdapter(ViewPager viewPager, Context context, FragmentManager fm)
@@ -35,57 +48,26 @@ public class ViewPagerAdapter extends FragmentPagerAdapter implements ActionBar.
         super(fm);
         this.context = context;
         this.viewPager = viewPager;
-
-        tabs = new ArrayList<>();
     }
 
     @Override
     public Fragment getItem(int position)
     {
-        TabInfo info = tabs.get(position);
-        return Fragment.instantiate(context, info.aClass.getName(), info.args);
-    }
+        switch (position) {
+            case 0:
+                return new BoxesFragment_();
+            case 1:
+                return new FriendsFragment_();
+            case 2:
+                return new MineFragment_();
+        }
 
-    public ActionBar.Tab addTab(ActionBar.Tab tab, Class<?> clss, Bundle args)
-    {
-        TabInfo info = new TabInfo(clss, args);
-        tab.setTag(info); tab.setTabListener(this);
-
-        tabs.add(info);
-        return tab;
+        return null;
     }
 
     @Override
     public int getCount()
     {
-        return tabs.size();
+        return 3;
     }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-    @Override
-    public void onPageSelected(int position)
-    {
-        ((Activity)context).getActionBar().setSelectedNavigationItem(position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {}
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
-    {
-        Object tag = tab.getTag();
-        for(int i = 0; i < tabs.size(); i++)
-        {
-            if(tabs.get(i) == tag) viewPager.setCurrentItem(i);
-        }
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {}
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {}
 }

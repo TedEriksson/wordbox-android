@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="android:Theme.Material.Light">
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <item name="android:colorPrimary">@color/blue</item>
         <item name="android:colorPrimaryDark">@color/darkblue</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:colorAccent">@color/darkblue</item>
         <item name="android:navigationBarColor">@color/darkblue</item>
-        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.WordBox</item>
-    </style>
 
-    <style name="ActionBarTabStyle.WordBox" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
-        <item name="android:background">@drawable/actionbar_tab_indicator</item>
+        <item name="windowActionBar">false</item>
     </style>
 </resources>

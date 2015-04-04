@@ -1,12 +1,18 @@
 package uk.co.vism.wordbox.activities;
 
 import android.app.ActionBar;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.astuetz.PagerSlidingTabStrip;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -31,12 +37,17 @@ import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.User;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends FragmentActivity
+public class HomeActivity extends ActionBarActivity
 {
+    @ViewById(R.id.tabs)
+    PagerSlidingTabStrip tabs;
+
     @ViewById(R.id.viewPager)
     ViewPager viewPager;
+
     @ViewById(R.id.requestRow)
     RelativeLayout requestRow;
+
     @ViewById(R.id.requestCount)
     TextView requestCount;
 
@@ -45,8 +56,9 @@ public class HomeActivity extends FragmentActivity
     @AfterViews
     void init()
     {
+
+
         adapter = new ViewPagerAdapter(viewPager, HomeActivity.this, getSupportFragmentManager());
-        setupActionBar();
 
         // if there are any pending requests
         if(true)
@@ -61,25 +73,7 @@ public class HomeActivity extends FragmentActivity
     private void setupViewPager()
     {
         viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(adapter);
-        viewPager.setCurrentItem(1);
-        adapter.notifyDataSetChanged();
-    }
-
-    private void setupActionBar()
-    {
-        ActionBar.Tab tab;
-
-        final ActionBar bar = getActionBar();
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        bar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
-
-        tab = adapter.addTab(bar.newTab().setText(BoxesFragment.NAME), BoxesFragment_.class, null);
-        bar.addTab(tab);
-        tab = adapter.addTab(bar.newTab().setText(FriendsFragment.NAME), FriendsFragment_.class, null);
-        bar.addTab(tab);
-        tab = adapter.addTab(bar.newTab().setText(MineFragment.NAME), MineFragment_.class, null);
-        bar.addTab(tab);
+        tabs.setViewPager(viewPager);
     }
 
     @Click
