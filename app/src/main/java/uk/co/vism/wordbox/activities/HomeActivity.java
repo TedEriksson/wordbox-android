@@ -20,7 +20,11 @@ import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.adapters.ViewPagerAdapter;
 import uk.co.vism.wordbox.managers.RestClientManager;
 import uk.co.vism.wordbox.managers.UserManager;
+import uk.co.vism.wordbox.models.Sentence;
+import uk.co.vism.wordbox.models.TempSentence;
+import uk.co.vism.wordbox.models.TempWord;
 import uk.co.vism.wordbox.models.User;
+import uk.co.vism.wordbox.models.Word;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends ActionBarActivity {
@@ -51,6 +55,8 @@ public class HomeActivity extends ActionBarActivity {
             requestRow.setVisibility(LinearLayout.GONE);
 
         setupViewPager();
+
+        Realm.deleteRealmFile(this);
         downloadUser();
     }
 
@@ -69,10 +75,27 @@ public class HomeActivity extends ActionBarActivity {
         RequestsActivity_.intent(HomeActivity.this).start();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Outputs all words from Temporary Realm
+        // TODO: Remove example
+        try (Realm realm = Realm.getInstance(this, "temp.realm")) {
+            for (TempSentence sentence : realm.where(TempSentence.class).findAll()) {
+                for (TempWord word : sentence.getWords()) {
+                    Log.d("TempWord", " word: " + word.getText());
+                }
+            }
+        }
+    }
+
+    /**
+     * This method updates user 1, this user can be used throughout the app
+     * TODO update proper user
+     */
     @Background
     void downloadUser() {
-        Realm.deleteRealmFile(this);
-
         // try with resources - the .close() method will automatically be called after the code block terminates
         try (Realm realm = Realm.getInstance(this)) {
             // Update user on app launch (this will get all info about them)

@@ -27,12 +27,6 @@ public class RestClientManager {
     public static void updateUser(Context context, Realm realm, int id) {
         RestClientManager instance = getInstance(context);
 
-        realm.beginTransaction();
-
-        String json = instance.restClient.getUser(id).toString();
-        Log.d("json", json);
-        realm.createOrUpdateObjectFromJson(User.class, json);
-
-        realm.commitTransaction();
+        UserManager.updateUserByJson(context, realm, id, instance.restClient.getUser(id).toString());
     }
 }

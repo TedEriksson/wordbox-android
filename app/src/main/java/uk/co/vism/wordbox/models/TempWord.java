@@ -3,22 +3,16 @@ package uk.co.vism.wordbox.models;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Word extends RealmObject {
-    @PrimaryKey
-    private int id;
+public class TempWord extends RealmObject {
     private String text;
     private int order;
 
-    public Word() {
+    public TempWord() {
     }
 
-    public Word(int order, String text) {
+    public TempWord(int order, String text) {
         setOrder(order);
         setText(text);
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getText() {
@@ -27,10 +21,6 @@ public class Word extends RealmObject {
 
     public int getOrder() {
         return order;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setText(String text) {
