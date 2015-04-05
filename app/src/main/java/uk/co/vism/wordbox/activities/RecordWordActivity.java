@@ -1,103 +1,44 @@
 package uk.co.vism.wordbox.activities;
 
 import android.app.Activity;
-import android.media.CamcorderProfile;
-import android.media.MediaRecorder;
-import android.os.Environment;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.widget.VideoView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.IOException;
-
 import uk.co.vism.wordbox.R;
 
 @EActivity(R.layout.activity_record_word)
-public class RecordWordActivity extends Activity implements View.OnClickListener, SurfaceHolder.Callback {
-    @ViewById(R.id.cameraSurfaceView)
-    SurfaceView cameraView;
+public class RecordWordActivity extends Activity { // implements View.OnClickListener, SurfaceHolder.Callback {
+    private static final int REQUEST_VIDEO_CAPTURE = 42;
 
-    private MediaRecorder recorder;
-    private SurfaceHolder holder;
-    private boolean recording = false;
+    @ViewById(R.id.videoView)
+    VideoView videoView;
 
     @AfterViews
     void init() {
-        recorder = new MediaRecorder();
-        initRecorder();
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
-        holder = cameraView.getHolder();
-        holder.addCallback(RecordWordActivity.this);
-
-        cameraView.setClickable(true);
-        cameraView.setOnClickListener(RecordWordActivity.this);
-    }
-
-    private void initRecorder() {
-        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-
-        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-        recorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
-        recorder.setProfile(profile);
-        recorder.setOutputFile(Environment.getExternalStorageDirectory().getPath() + "/video.mp4");
-        recorder.setMaxDuration(50000);     // 50 seconds
-        recorder.setMaxFileSize(5000000);   // approximately 5 megabytes
-    }
-
-    private void prepareRecorder() {
-        recorder.setPreviewDisplay(holder.getSurface());
-
-        try {
-            recorder.prepare();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-            finish();
-        } catch (IOException e) {
-            e.printStackTrace();
-            finish();
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_VIDEO_CAPTURE);
         }
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        prepareRecorder();
-    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+            Uri videoUri = data.getData();
+            videoView.setVideoURI(videoUri);
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        if (recording) {
-            recorder.stop();
-            recording = false;
-        }
-
-        recorder.release();
-        finish();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (recording) {
-            recording = false;
-            recorder.stop();
-
-            initRecorder();
-            prepareRecorder();
-        } else {
-            try {
-                recording = true;
-                recorder.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-                recording = false;
-            }
+            // we have the uri of the video, so we need to launch an upload task in the background
+            // providing feedback to the user about the upload state, and finish once it's done
+            finish();
         }
     }
 }

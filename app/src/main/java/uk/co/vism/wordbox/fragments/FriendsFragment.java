@@ -65,6 +65,8 @@ public class FriendsFragment extends Fragment {
     }
 
     private RealmList<User> getFriends() {
+
+
         RealmList<User> users = new RealmList<>();
         String[] names = new String[]{"Ted", "Sophie", "Adam", "John", "Stefan"};
 

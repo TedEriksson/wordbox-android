@@ -44,8 +44,6 @@ public class HomeActivity extends ActionBarActivity {
 
     @AfterViews
     void init() {
-
-
         adapter = new ViewPagerAdapter(viewPager, HomeActivity.this, getSupportFragmentManager());
 
         // if there are any pending requests
@@ -81,12 +79,20 @@ public class HomeActivity extends ActionBarActivity {
 
         // Outputs all words from Temporary Realm
         // TODO: Remove example
-        try (Realm realm = Realm.getInstance(this, "temp.realm")) {
+        Realm realm = null;
+        try
+        {
+            realm = Realm.getInstance(this, "temp.realm");
             for (TempSentence sentence : realm.where(TempSentence.class).findAll()) {
                 for (TempWord word : sentence.getWords()) {
                     Log.d("TempWord", " word: " + word.getText());
                 }
             }
+        }
+        finally
+        {
+            if(realm != null)
+                realm.close();
         }
     }
 
@@ -97,7 +103,10 @@ public class HomeActivity extends ActionBarActivity {
     @Background
     void downloadUser() {
         // try with resources - the .close() method will automatically be called after the code block terminates
-        try (Realm realm = Realm.getInstance(this)) {
+        Realm realm = null;
+        try {
+            realm = Realm.getInstance(this);
+
             // Update user on app launch (this will get all info about them)
             RestClientManager.updateUser(this, realm, 1);
 
@@ -107,6 +116,11 @@ public class HomeActivity extends ActionBarActivity {
             // Showing that the User is usable
             Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
             Log.d("eeee", "sentence: " + user.getSentences().get(0).getId());
+        }
+        finally
+        {
+            if(realm != null)
+                realm.close();
         }
     }
 }
