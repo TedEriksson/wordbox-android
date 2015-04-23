@@ -51,13 +51,20 @@ public class MineFragment extends Fragment {
 
     @Background
     public void getSentences() {
-        try (Realm realm = Realm.getInstance(getActivity())) {
-            RestClientManager.updateUser(getActivity(), realm, 1);
+        Realm realm = null;
+        try {
+            realm = Realm.getInstance(getActivity());
+            //RestClientManager.updateUser(getActivity(), realm, 1);
 
             // this won't work because fuck you, that's why
             //User user = UserManager.getUserById(realm, 1);
             //for(int i = 0; i < user.getSentences().size(); i++)
             //sentences.add(user.getSentences().get(i));
+        }
+        finally {
+            if(realm != null) {
+                realm.close();
+            }
         }
     }
 

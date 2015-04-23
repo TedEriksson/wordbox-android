@@ -55,7 +55,7 @@ public class HomeActivity extends ActionBarActivity {
         setupViewPager();
 
         Realm.deleteRealmFile(this);
-        downloadUser();
+        //downloadUser();
     }
 
     private void setupViewPager() {

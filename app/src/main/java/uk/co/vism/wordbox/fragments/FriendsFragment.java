@@ -59,14 +59,13 @@ public class FriendsFragment extends Fragment {
                         String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
                         Toast.makeText(getActivity(), name, Toast.LENGTH_SHORT).show();
                     }
+                    cursor.close();
                 }
                 break;
         }
     }
 
     private RealmList<User> getFriends() {
-
-
         RealmList<User> users = new RealmList<>();
         String[] names = new String[]{"Ted", "Sophie", "Adam", "John", "Stefan"};
 
