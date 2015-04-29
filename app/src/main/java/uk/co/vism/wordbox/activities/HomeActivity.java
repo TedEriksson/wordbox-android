@@ -1,5 +1,6 @@
 package uk.co.vism.wordbox.activities;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -15,19 +16,20 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.List;
+
 import io.realm.Realm;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.adapters.ViewPagerAdapter;
+import uk.co.vism.wordbox.fragments.WordBoxFragment;
 import uk.co.vism.wordbox.managers.RestClientManager;
 import uk.co.vism.wordbox.managers.UserManager;
-import uk.co.vism.wordbox.models.Sentence;
 import uk.co.vism.wordbox.models.TempSentence;
 import uk.co.vism.wordbox.models.TempWord;
 import uk.co.vism.wordbox.models.User;
-import uk.co.vism.wordbox.models.Word;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends ActionBarActivity implements WordBoxFragment.OnUserLoaded {
     @ViewById(R.id.tabs)
     PagerSlidingTabStrip tabs;
 
@@ -54,12 +56,14 @@ public class HomeActivity extends ActionBarActivity {
 
         setupViewPager();
 
-        Realm.deleteRealmFile(this);
-        //downloadUser();
+        Realm.deleteRealmFile(HomeActivity.this);
+        downloadUser();
     }
 
     private void setupViewPager() {
         viewPager.setAdapter(adapter);
+        //viewPager.setCurrentItem(1);
+
         tabs.setViewPager(viewPager);
     }
 
@@ -80,18 +84,15 @@ public class HomeActivity extends ActionBarActivity {
         // Outputs all words from Temporary Realm
         // TODO: Remove example
         Realm realm = null;
-        try
-        {
+        try {
             realm = Realm.getInstance(this, "temp.realm");
             for (TempSentence sentence : realm.where(TempSentence.class).findAll()) {
                 for (TempWord word : sentence.getWords()) {
                     Log.d("TempWord", " word: " + word.getText());
                 }
             }
-        }
-        finally
-        {
-            if(realm != null)
+        } finally {
+            if (realm != null)
                 realm.close();
         }
     }
@@ -102,7 +103,6 @@ public class HomeActivity extends ActionBarActivity {
      */
     @Background
     void downloadUser() {
-        // try with resources - the .close() method will automatically be called after the code block terminates
         Realm realm = null;
         try {
             realm = Realm.getInstance(this);
@@ -116,11 +116,23 @@ public class HomeActivity extends ActionBarActivity {
             // Showing that the User is usable
             Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
             Log.d("eeee", "sentence: " + user.getSentences().get(0).getId());
-        }
-        finally
-        {
-            if(realm != null)
+
+            onUserLoaded(user);
+        } finally {
+            if (realm != null) {
                 realm.close();
+            }
+        }
+    }
+
+    @Override
+    public void onUserLoaded(User user) {
+        // grab all attached fragments
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
+        // update data for each
+        for(int i = 0; i < fragments.size(); i++) {
+            ((WordBoxFragment) fragments.get(i)).updateData();
         }
     }
 }

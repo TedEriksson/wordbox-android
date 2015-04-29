@@ -1,8 +1,8 @@
 package uk.co.vism.wordbox.fragments;
 
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,11 +17,11 @@ import java.util.ArrayList;
 import io.realm.Realm;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.adapters.BoxesAdapter;
-import uk.co.vism.wordbox.managers.RestClientManager;
 import uk.co.vism.wordbox.models.Sentence;
+import uk.co.vism.wordbox.models.User;
 
 @EFragment(R.layout.fragment_mine)
-public class MineFragment extends Fragment {
+public class MineFragment extends WordBoxFragment {
     public static final String NAME = "Mine";
 
     @ViewById(R.id.friendImage)
@@ -34,6 +34,11 @@ public class MineFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Sentence> sentences;
+
+    @Override
+    public void updateData() {
+
+    }
 
     @AfterViews
     void init() {
@@ -62,7 +67,7 @@ public class MineFragment extends Fragment {
             //sentences.add(user.getSentences().get(i));
         }
         finally {
-            if(realm != null) {
+            if (realm != null) {
                 realm.close();
             }
         }

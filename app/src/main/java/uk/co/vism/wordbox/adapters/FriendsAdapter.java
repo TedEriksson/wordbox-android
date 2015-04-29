@@ -9,12 +9,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.models.User;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
-    private RealmList<User> friends;
+    private ArrayList<User> friends;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
@@ -27,7 +29,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         }
     }
 
-    public FriendsAdapter(RealmList<User> friends) {
+    public FriendsAdapter(ArrayList<User> friends) {
         this.friends = friends;
     }
 

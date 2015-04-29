@@ -7,39 +7,56 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+
+import io.realm.Realm;
 import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.adapters.FriendsAdapter;
+import uk.co.vism.wordbox.managers.UserManager;
+import uk.co.vism.wordbox.models.Sentence;
 import uk.co.vism.wordbox.models.User;
 
 @EFragment(R.layout.fragment_friends)
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends WordBoxFragment {
     public static final String NAME = "Friends";
     public static final int PICK_CONTACT = 108;
 
     @ViewById(R.id.friendsList)
     RecyclerView friendsList;
 
+    private ArrayList<User> friends;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    @Override
+    @UiThread
+    public void updateData() {
+        user = UserManager.getUserById(realm, 1);
+
+        friends.addAll(user.getFriends());
+        adapter.notifyItemRangeInserted(0, friends.size());
+    }
 
     @AfterViews
     void init() {
         layoutManager = new LinearLayoutManager(getActivity());
         friendsList.setLayoutManager(layoutManager);
 
-        adapter = new FriendsAdapter(getFriends());
+        friends = new ArrayList<>();
+        adapter = new FriendsAdapter(friends);
         friendsList.setAdapter(adapter);
     }
 

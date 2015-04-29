@@ -10,6 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,18 +21,21 @@
             android:padding="10dp"
             android:textColor="@android:color/white"
             android:textSize="24sp"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/requestTitle"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:id="@+id/requestDescription"
                 android:textColor="@android:color/black"
-                android:padding="10dp" />
+                android:padding="10dp"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +43,8 @@
                 android:id="@+id/acceptRequest"
                 android:text="@string/accept_request"
                 android:background="@android:color/transparent"
-                android:textColor="@color/blue" />
+                android:textColor="@color/blue"/>
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +52,7 @@
                 android:id="@+id/rejectRequest"
                 android:text="@string/reject_request"
                 android:background="@android:color/transparent"
-                android:textColor="@color/blue" />
+                android:textColor="@color/blue"/>
         </RelativeLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

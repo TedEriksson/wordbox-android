@@ -1,10 +1,8 @@
 package uk.co.vism.wordbox.managers;
 
 import android.content.Context;
-import android.util.Log;
 
 import io.realm.Realm;
-import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.network.RestClient;
 import uk.co.vism.wordbox.network.RestClient_;
 

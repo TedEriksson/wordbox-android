@@ -8,11 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/friend_row"
-        android:id="@+id/thisIsMe" />
+        android:id="@+id/thisIsMe"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mySentencesList"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"/>
 </LinearLayout>

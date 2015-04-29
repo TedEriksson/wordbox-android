@@ -79,7 +79,7 @@ public class CreateBoxActivity extends Activity {
             //Create Sentence
             TempSentence sentence = realm.createObject(TempSentence.class);
 
-            for (TempWord wordToCopy: words) {
+            for (TempWord wordToCopy : words) {
                 TempWord realmWord = realm.copyToRealm(wordToCopy);
 
                 sentence.getWords().add(realmWord);

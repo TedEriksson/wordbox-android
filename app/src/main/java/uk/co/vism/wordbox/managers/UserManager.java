@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import io.realm.Realm;
-import io.realm.RealmList;
-import uk.co.vism.wordbox.models.Sentence;
 import uk.co.vism.wordbox.models.User;
 
 public class UserManager {
