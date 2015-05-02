@@ -9,9 +9,9 @@ import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.User;
 
 public abstract class WordBoxFragment extends Fragment {
-    OnUserLoaded activity;
-    Realm realm;
-    User user;
+    protected OnUserLoaded activity;
+    protected Realm realm;
+    protected User user;
 
     public interface OnUserLoaded {
         public void onUserLoaded(User user);
@@ -25,8 +25,7 @@ public abstract class WordBoxFragment extends Fragment {
 
         realm = Realm.getInstance(getActivity());
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
+        // This makes sure that the container activity has implemented the callback interface. If not, it throws an exception
         try {
             this.activity = (OnUserLoaded) activity;
         }

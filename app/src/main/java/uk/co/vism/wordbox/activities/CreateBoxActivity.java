@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -17,8 +18,11 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.managers.RestClientManager;
+import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.TempSentence;
 import uk.co.vism.wordbox.models.TempWord;
+import uk.co.vism.wordbox.models.User;
 
 @EActivity(R.layout.activity_create_box)
 public class CreateBoxActivity extends Activity {
@@ -30,6 +34,7 @@ public class CreateBoxActivity extends Activity {
     @ViewById(R.id.wordNumber)
     TextView wordNumber;
 
+    private Realm tempRealm;
     private EditText word;
     private ArrayList<TempWord> words;
 
@@ -56,7 +61,6 @@ public class CreateBoxActivity extends Activity {
         wordNumber.setText(words.size() + " words");
 
         word = (EditText) LayoutInflater.from(CreateBoxActivity.this).inflate(R.layout.new_word, null);
-
         word.setId(ID_PREFIX + words.size());
         word.requestFocus();
         word.requestFocusFromTouch();
@@ -70,27 +74,29 @@ public class CreateBoxActivity extends Activity {
      * It puts the new TempSentence into the temporary realm to be uploaded
      */
     @Click(R.id.wordDone)
+    @Background
     void clickDone() {
-        Realm realm = null;
-        try {
-            realm = Realm.getInstance(this, "temp.realm");
+        tempRealm = Realm.getInstance(CreateBoxActivity.this, "temp.realm");
 
-            realm.beginTransaction();
-            //Create Sentence
-            TempSentence sentence = realm.createObject(TempSentence.class);
-
-            for (TempWord wordToCopy : words) {
-                TempWord realmWord = realm.copyToRealm(wordToCopy);
-
-                sentence.getWords().add(realmWord);
-            }
-
-            realm.commitTransaction();
-        } finally {
-            if (realm != null) {
-                realm.close();
-            }
-            finish();
+        // create sentence
+        tempRealm.beginTransaction();
+        TempSentence sentence = tempRealm.createObject(TempSentence.class);
+        sentence.setUser_id(1);
+        
+        for (TempWord wordToCopy : words) {
+            TempWord realmWord = tempRealm.copyToRealm(wordToCopy);
+            sentence.getWords().add(realmWord);
         }
+        tempRealm.commitTransaction();
+
+        // upload sentence
+        RestClientManager.uploadSentence(CreateBoxActivity.this, tempRealm, sentence);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        tempRealm.close();
     }
 }

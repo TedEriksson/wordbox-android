@@ -3,9 +3,6 @@ package uk.co.vism.wordbox.models;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
-/**
- * Created by Ted Eriksson on 05/04/15.
- */
 public class TempSentence extends RealmObject {
     private int user_id;
     private RealmList<TempWord> words;

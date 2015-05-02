@@ -49,7 +49,7 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
         adapter = new ViewPagerAdapter(viewPager, HomeActivity.this, getSupportFragmentManager());
 
         // if there are any pending requests
-        if (true)
+        if (true)   // intellisense
             requestCount.setText("You have 2 requests pending");
         else
             requestRow.setVisibility(LinearLayout.GONE);
@@ -62,7 +62,8 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
 
     private void setupViewPager() {
         viewPager.setAdapter(adapter);
-        //viewPager.setCurrentItem(1);
+        viewPager.setOffscreenPageLimit(5);
+        viewPager.setCurrentItem(1);
 
         tabs.setViewPager(viewPager);
     }
@@ -91,7 +92,8 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
                     Log.d("TempWord", " word: " + word.getText());
                 }
             }
-        } finally {
+        }
+        finally {
             if (realm != null)
                 realm.close();
         }
@@ -105,20 +107,21 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
     void downloadUser() {
         Realm realm = null;
         try {
-            realm = Realm.getInstance(this);
+            realm = Realm.getInstance(HomeActivity.this);
 
-            // Update user on app launch (this will get all info about them)
-            RestClientManager.updateUser(this, realm, 1);
+            // update user on app launch (this will get all info about them)
+            RestClientManager.updateUser(HomeActivity.this, realm, 1);
 
-            // Get updated User from database
+            // get updated User from database
             User user = UserManager.getUserById(realm, 1);
 
-            // Showing that the User is usable
+            // showing that the User is usable
             Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
             Log.d("eeee", "sentence: " + user.getSentences().get(0).getId());
 
             onUserLoaded(user);
-        } finally {
+        }
+        finally {
             if (realm != null) {
                 realm.close();
             }
