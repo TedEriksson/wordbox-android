@@ -32,13 +32,10 @@ import uk.co.vism.wordbox.models.User;
 public class HomeActivity extends ActionBarActivity implements WordBoxFragment.OnUserLoaded {
     @ViewById(R.id.tabs)
     PagerSlidingTabStrip tabs;
-
     @ViewById(R.id.viewPager)
     ViewPager viewPager;
-
     @ViewById(R.id.requestRow)
     RelativeLayout requestRow;
-
     @ViewById(R.id.requestCount)
     TextView requestCount;
 

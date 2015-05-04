@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import io.realm.Realm;
 import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.activities.HomeActivity_;
 import uk.co.vism.wordbox.adapters.FriendsAdapter;
 import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.Sentence;
@@ -37,28 +39,42 @@ public class FriendsFragment extends WordBoxFragment {
 
     @ViewById(R.id.friendsList)
     RecyclerView friendsList;
+    @ViewById(R.id.swipeRefresh)
+    SwipeRefreshLayout refreshLayout;
 
     private ArrayList<User> friends;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    @Override
-    @UiThread
-    public void updateData() {
-        user = UserManager.getUserById(realm, 1);
-
-        friends.addAll(user.getFriends());
-        adapter.notifyItemRangeInserted(0, friends.size());
-    }
-
     @AfterViews
     void init() {
-        layoutManager = new LinearLayoutManager(getActivity());
-        friendsList.setLayoutManager(layoutManager);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                HomeActivity_ activity = (HomeActivity_) getActivity();
+                activity.downloadUser();
+            }
+        });
 
         friends = new ArrayList<>();
         adapter = new FriendsAdapter(friends);
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        friendsList.setLayoutManager(layoutManager);
         friendsList.setAdapter(adapter);
+    }
+
+    @Override
+    @UiThread
+    public void updateData() {
+        refreshLayout.setRefreshing(false);
+        friends.clear();
+
+        // grab the user for this thread
+        user = UserManager.getUserById(realm, 1);
+
+        friends.addAll(user.getFriends());
+        adapter.notifyItemRangeChanged(0, friends.size());
     }
 
     @Override

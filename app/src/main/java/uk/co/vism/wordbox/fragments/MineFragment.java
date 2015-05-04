@@ -1,5 +1,6 @@
 package uk.co.vism.wordbox.fragments;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +17,9 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.activities.HomeActivity_;
 import uk.co.vism.wordbox.adapters.BoxesAdapter;
+import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.Sentence;
 import uk.co.vism.wordbox.models.User;
 
@@ -30,51 +33,43 @@ public class MineFragment extends WordBoxFragment {
     TextView myName;
     @ViewById(R.id.mySentencesList)
     RecyclerView recyclerView;
+    @ViewById(R.id.swipeRefresh)
+    SwipeRefreshLayout refreshLayout;
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Sentence> sentences;
 
-    @Override
-    public void updateData() {
-
-    }
-
     @AfterViews
     void init() {
-        sentences = new ArrayList<>();
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                HomeActivity_ activity = (HomeActivity_) getActivity();
+                activity.downloadUser();
+            }
+        });
+
         myName.setText("Botond");
+
+        sentences = new ArrayList<>();
+        adapter = new BoxesAdapter(sentences);
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new BoxesAdapter(sentences);
         recyclerView.setAdapter(adapter);
-
-        getSentences();
     }
 
-    @Background
-    public void getSentences() {
-        Realm realm = null;
-        try {
-            realm = Realm.getInstance(getActivity());
-            //RestClientManager.updateUser(getActivity(), realm, 1);
-
-            // this won't work because fuck you, that's why
-            //User user = UserManager.getUserById(realm, 1);
-            //for(int i = 0; i < user.getSentences().size(); i++)
-            //sentences.add(user.getSentences().get(i));
-        }
-        finally {
-            if (realm != null) {
-                realm.close();
-            }
-        }
-    }
-
+    @Override
     @UiThread
-    void finished() {
-        adapter.notifyItemRangeInserted(0, sentences.size());
+    public void updateData() {
+        refreshLayout.setRefreshing(false);
+        sentences.clear();
+
+        // grab the user for this thread
+        user = UserManager.getUserById(realm, 1);
+
+        sentences.addAll(user.getSentences());
+        adapter.notifyItemRangeChanged(0, sentences.size());
     }
 }

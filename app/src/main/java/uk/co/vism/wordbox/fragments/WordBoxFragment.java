@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import org.androidannotations.annotations.EFragment;
+
 import io.realm.Realm;
 import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.User;
 
 public abstract class WordBoxFragment extends Fragment {
-    protected OnUserLoaded activity;
     protected Realm realm;
     protected User user;
 
@@ -22,16 +23,7 @@ public abstract class WordBoxFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
         realm = Realm.getInstance(getActivity());
-
-        // This makes sure that the container activity has implemented the callback interface. If not, it throws an exception
-        try {
-            this.activity = (OnUserLoaded) activity;
-        }
-        catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnUserLoaded");
-        }
     }
 
     @Override
