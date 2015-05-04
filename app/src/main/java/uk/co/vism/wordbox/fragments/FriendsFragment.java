@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
@@ -82,20 +83,6 @@ public class FriendsFragment extends WordBoxFragment {
         }
     }
 
-    private RealmList<User> getFriends() {
-        RealmList<User> users = new RealmList<>();
-        String[] names = new String[]{"Ted", "Sophie", "Adam", "John", "Stefan"};
-
-        User user;
-        for (String name : names) {
-            user = new User();
-            user.setUsername(name);
-            users.add(user);
-        }
-
-        return users;
-    }
-
     /**
      * Click handler for the new friend row at the top of the friends list.
      * Creates an alert dialog with three choices of adding a new friend, with action despatched
@@ -128,7 +115,8 @@ public class FriendsFragment extends WordBoxFragment {
      * Attempts to find the user by username, and adds it as a friend
      * Needs to query server for user, handle not found, and if found, add it to the list
      */
-    private void addByUsername() {
+    @Background
+    void addByUsername() {
         final EditText username = new EditText(getActivity());
         username.setTextColor(getResources().getColor(android.R.color.black));
 
@@ -148,7 +136,8 @@ public class FriendsFragment extends WordBoxFragment {
      * Prompts the user to enter an email address, and launched the default email client with to,
      * subject, and a default invitation message
      */
-    private void addByEmail() {
+    @Background
+    void addByEmail() {
         final EditText username = new EditText(getActivity());
         username.setTextColor(getResources().getColor(android.R.color.black));
 
@@ -171,7 +160,8 @@ public class FriendsFragment extends WordBoxFragment {
     /**
      * Opens the contact picker and returns the selected contact, which is then picked up by onActivityResult
      */
-    private void addByContact() {
+    @Background
+    void addByContact() {
         Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(i, PICK_CONTACT);
     }
