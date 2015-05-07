@@ -47,14 +47,15 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         RealmObject obj = requests.get(i);
 
         if (obj instanceof Word) {
-            Word word = (Word) obj;
+            final Word word = (Word) obj;
+
             viewHolder.title.setText(word.getText());
             viewHolder.title.setBackgroundColor(viewHolder.title.getResources().getColor(R.color.orange));
             viewHolder.description.setText("Word from Botond");
             viewHolder.accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RecordWordActivity_.intent(viewHolder.title.getContext()).start();
+                    RecordWordActivity_.intent(viewHolder.title.getContext()).extra("word_id", word.getId()).start();
                 }
             });
         } else if (obj instanceof User) {

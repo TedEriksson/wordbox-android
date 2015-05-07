@@ -45,6 +45,8 @@ public class RequestsActivity extends ActionBarActivity {
 
         Word word = new Word(0, "Oh");
         requests.add(word);
+        word = new Word(0, "Banana");
+        requests.add(word);
 
         User user = new User();
         user.setUsername("Sophie");
