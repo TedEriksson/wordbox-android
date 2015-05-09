@@ -15,8 +15,6 @@ public class LoginActivity extends ActionBarActivity {
     @ViewById
     EditText email;
     @ViewById
-    EditText username;
-    @ViewById
     EditText password;
 
     @Click
