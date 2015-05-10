@@ -2,13 +2,18 @@ package uk.co.vism.wordbox.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import io.realm.Realm;
 import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.managers.RestClientManager;
 
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends ActionBarActivity {
@@ -16,6 +21,18 @@ public class LoginActivity extends ActionBarActivity {
     EditText email;
     @ViewById
     EditText password;
+
+    @AfterViews
+    void init() {
+        if(getSharedPreferences("wordbox", 0).contains("userid")) {
+            HomeActivity_.intent(LoginActivity.this).start();
+        }
+    }
+
+    @Click
+    void register() {
+        RegisterActivity_.intent(LoginActivity.this).start();
+    }
 
     @Click
     void login() {
@@ -25,17 +42,41 @@ public class LoginActivity extends ActionBarActivity {
             password.setHintTextColor(getResources().getColor(android.R.color.holo_red_light));
 
         if(email.getText().length() > 0 && password.getText().length() > 0) {
+            clear();
             attemptLogin();
         }
     }
 
-    @Click
-    void register() {
-
-    }
-
     @Background
     void attemptLogin() {
+        Realm realm = null;
 
+        try {
+            realm = Realm.getInstance(LoginActivity.this);
+
+            // update user on signing in
+            boolean loggedIn = RestClientManager.loginUser(LoginActivity.this, realm, email.getText().toString(), password.getText().toString());
+
+            // if unsuccessful, error the fuck out
+            if(!loggedIn) {
+                error();
+            } else {        // otherwise we've got a successful login, redirect to home
+                HomeActivity_.intent(LoginActivity.this).start();
+            }
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
+        }
+    }
+
+    @UiThread
+    void error() {
+        Toast.makeText(LoginActivity.this, "Invalid login credentials. Please try again.", Toast.LENGTH_SHORT).show();
+    }
+
+    protected void clear() {
+        Realm.deleteRealmFile(LoginActivity.this);
+        getSharedPreferences("wordbox", 0).edit().clear().apply();
     }
 }

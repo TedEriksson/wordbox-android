@@ -56,8 +56,6 @@ public class BoxesFragment extends WordBoxFragment {
         refreshLayout.setRefreshing(false);
         sentences.clear();
 
-        // grab the user for this current thread, and grab their sentences
-        user = UserManager.getUserById(realm, 1);
         sentences.addAll(user.getSentences());
 
         // notify that we've updated

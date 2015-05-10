@@ -66,9 +66,6 @@ public class MineFragment extends WordBoxFragment {
         refreshLayout.setRefreshing(false);
         sentences.clear();
 
-        // grab the user for this thread
-        user = UserManager.getUserById(realm, 1);
-
         sentences.addAll(user.getSentences());
         adapter.notifyItemRangeChanged(0, sentences.size());
     }

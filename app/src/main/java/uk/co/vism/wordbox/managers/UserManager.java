@@ -11,7 +11,7 @@ public class UserManager {
         return realm.where(User.class).equalTo("id", id).findFirst();
     }
 
-    public static void updateUserByJson(Context context, Realm realm, int id, String json) {
+    public static void updateUserByJson(Context context, Realm realm, String json) {
         realm.beginTransaction();
 
         Log.d("json", json);

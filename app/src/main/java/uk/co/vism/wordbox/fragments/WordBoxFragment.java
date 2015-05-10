@@ -15,7 +15,7 @@ public abstract class WordBoxFragment extends Fragment {
     protected User user;
 
     public interface OnUserLoaded {
-        public void onUserLoaded(User user);
+        void onUserLoaded(User user);
     }
 
     public abstract void updateData();
@@ -24,6 +24,7 @@ public abstract class WordBoxFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         realm = Realm.getInstance(getActivity());
+        user = UserManager.getUserById(realm, getActivity().getSharedPreferences("wordbox", 0).getInt("userid", 0));
     }
 
     @Override

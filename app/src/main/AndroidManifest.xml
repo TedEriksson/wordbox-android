@@ -26,6 +26,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.HomeActivity_"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activities.RegisterActivity_"
+            android:label="@string/app_name"
+            android:parentActivityName=".activities.LoginActivity_">
+        </activity>
+        <activity
             android:name=".activities.CreateBoxActivity_"
             android:label="@string/title_activity_create_box"
             android:parentActivityName=".activities.HomeActivity_">
@@ -39,10 +48,6 @@
             android:name=".activities.RecordWordActivity_"
             android:label="@string/title_activity_record_word"
             android:parentActivityName=".activities.RequestsActivity_">
-        </activity>
-        <activity
-            android:name=".activities.HomeActivity_"
-            android:label="@string/app_name">
         </activity>
     </application>
 

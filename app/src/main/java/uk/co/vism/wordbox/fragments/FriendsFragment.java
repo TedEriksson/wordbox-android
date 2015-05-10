@@ -70,9 +70,6 @@ public class FriendsFragment extends WordBoxFragment {
         refreshLayout.setRefreshing(false);
         friends.clear();
 
-        // grab the user for this thread
-        user = UserManager.getUserById(realm, 1);
-
         friends.addAll(user.getFriends());
         adapter.notifyItemRangeChanged(0, friends.size());
     }

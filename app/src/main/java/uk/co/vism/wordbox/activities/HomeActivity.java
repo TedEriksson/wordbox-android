@@ -52,8 +52,6 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
             requestRow.setVisibility(LinearLayout.GONE);
 
         setupViewPager();
-
-        Realm.deleteRealmFile(HomeActivity.this);
         downloadUser();
     }
 
@@ -81,19 +79,19 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
 
         // Outputs all words from Temporary Realm
         // TODO: Remove example
-        Realm realm = null;
-        try {
-            realm = Realm.getInstance(this, "temp.realm");
-            for (TempSentence sentence : realm.where(TempSentence.class).findAll()) {
-                for (TempWord word : sentence.getWords()) {
-                    Log.d("TempWord", " word: " + word.getText());
-                }
-            }
-        }
-        finally {
-            if (realm != null)
-                realm.close();
-        }
+//        Realm realm = null;
+//        try {
+//            realm = Realm.getInstance(this, "temp.realm");
+//            for (TempSentence sentence : realm.where(TempSentence.class).findAll()) {
+//                for (TempWord word : sentence.getWords()) {
+//                    Log.d("TempWord", " word: " + word.getText());
+//                }
+//            }
+//        }
+//        finally {
+//            if (realm != null)
+//                realm.close();
+//        }
     }
 
     /**
@@ -103,22 +101,20 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
     @Background
     void downloadUser() {
         Realm realm = null;
+
         try {
             realm = Realm.getInstance(HomeActivity.this);
+            int id = getSharedPreferences("wordbox", 0).getInt("userid", 0);
 
             // update user on app launch (this will get all info about them)
-            RestClientManager.updateUser(HomeActivity.this, realm, 1);
+            RestClientManager.updateUser(HomeActivity.this, realm, id);
 
             // get updated User from database
-            User user = UserManager.getUserById(realm, 1);
-
-            // showing that the User is usable
-            Log.d("eeee", "Friend id: " + user.getFriends().get(0).getId());
-            Log.d("eeee", "sentence: " + user.getSentences().get(0).getId());
+            User user = UserManager.getUserById(realm, id);
+            Log.d("user", user.toString());
 
             onUserLoaded(user);
-        }
-        finally {
+        } finally {
             if (realm != null) {
                 realm.close();
             }
