@@ -11,12 +11,10 @@ public class UserManager {
         return realm.where(User.class).equalTo("id", id).findFirst();
     }
 
-    public static void updateUserByJson(Context context, Realm realm, String json) {
+    public static void updateUserByJson(Realm realm, String json) {
         realm.beginTransaction();
-
         Log.d("json", json);
         realm.createOrUpdateObjectFromJson(User.class, json);
-
         realm.commitTransaction();
     }
 }

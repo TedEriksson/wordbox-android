@@ -36,10 +36,12 @@ public class LoginActivity extends ActionBarActivity {
 
     @Click
     void login() {
-        if(email.getText().length() == 0)
+        if(email.getText().length() == 0) {
             email.setHintTextColor(getResources().getColor(android.R.color.holo_red_light));
-        if(password.getText().length() == 0)
+        }
+        if(password.getText().length() == 0) {
             password.setHintTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }
 
         if(email.getText().length() > 0 && password.getText().length() > 0) {
             clear();

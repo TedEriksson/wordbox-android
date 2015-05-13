@@ -19,6 +19,7 @@ import io.realm.Realm;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.models.TempSentence;
 import uk.co.vism.wordbox.models.TempWord;
+import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.network.RestClient;
 import uk.co.vism.wordbox.network.RestClient_;
 
@@ -65,7 +66,7 @@ public class RestClientManager {
                 editor.putInt("userid", json.getInt("id"));
                 editor.apply();
 
-                UserManager.updateUserByJson(context, realm, json.toString());
+                UserManager.updateUserByJson(realm, json.toString());
                 return true;
             }
 
@@ -76,9 +77,48 @@ public class RestClientManager {
         }
     }
 
+    public static String[] register(Context context, Realm realm, String email, String username, String password) {
+        JSONObject json = new JSONObject();
+        try {
+            // create the post body
+            json.put("email", email);
+            json.put("username", username);
+            json.put("password", password);
+
+            // submit, get response
+            String response = getInstance(context).post(json.toString(), "/auth");
+            Log.d("register", response);
+            json = new JSONObject(response);
+
+            // check for errors
+            if(json.getString("status").equals("success")) {
+                json = json.getJSONObject("data");
+
+                // save the user id in sharedprefs
+                SharedPreferences.Editor editor = context.getSharedPreferences("wordbox", 0).edit();
+                editor.putInt("userid", json.getInt("id"));
+                editor.apply();
+
+                UserManager.updateUserByJson(realm, json.toString());
+                return new String[0];
+            }
+
+            JSONArray jsonErrors = json.getJSONObject("errors").getJSONArray("full_messages");
+            String[] errors = new String[jsonErrors.length()];
+            for(int i = 0; i < jsonErrors.length(); i++) {
+                errors[i] = jsonErrors.getString(i);
+            }
+            return errors;
+
+        } catch(Exception e) {
+            Log.d("loginUser:" + e.getClass(), e.getMessage());
+            return new String[] { "Unable to register" };
+        }
+    }
+
     public static void updateUser(Context context, Realm realm, int id) {
         String json = getInstance(context).get("/users/" + id);
-        UserManager.updateUserByJson(context, realm, json);
+        UserManager.updateUserByJson(realm, json);
     }
 
     public static void uploadSentence(Context context, Realm realm, TempSentence sentence) {
