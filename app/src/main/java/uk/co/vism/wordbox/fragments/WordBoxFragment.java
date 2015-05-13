@@ -15,7 +15,7 @@ public abstract class WordBoxFragment extends Fragment {
     protected User user;
 
     public interface OnUserLoaded {
-        void onUserLoaded(User user);
+        void onUserLoaded();
     }
 
     public abstract void updateData();
@@ -30,6 +30,12 @@ public abstract class WordBoxFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        realm.close();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
         realm.close();
     }
 }

@@ -3,7 +3,6 @@ package uk.co.vism.wordbox.activities;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +13,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -23,12 +24,9 @@ import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.adapters.ViewPagerAdapter;
 import uk.co.vism.wordbox.fragments.WordBoxFragment;
 import uk.co.vism.wordbox.managers.RestClientManager;
-import uk.co.vism.wordbox.managers.UserManager;
-import uk.co.vism.wordbox.models.TempSentence;
-import uk.co.vism.wordbox.models.TempWord;
-import uk.co.vism.wordbox.models.User;
 
 @EActivity(R.layout.activity_home)
+@OptionsMenu(R.menu.menu_home)
 public class HomeActivity extends ActionBarActivity implements WordBoxFragment.OnUserLoaded {
     @ViewById(R.id.tabs)
     PagerSlidingTabStrip tabs;
@@ -52,7 +50,17 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
             requestRow.setVisibility(LinearLayout.GONE);
 
         setupViewPager();
-        downloadUser();
+    }
+
+    @OptionsItem(R.id.action_logout)
+    void logout() {
+        getSharedPreferences("wordbox", 0).edit().clear().apply();
+        LoginActivity_.intent(HomeActivity.this).start();
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        ((WordBoxFragment) fragment).updateData();
     }
 
     private void setupViewPager() {
@@ -109,11 +117,7 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
             // update user on app launch (this will get all info about them)
             RestClientManager.updateUser(HomeActivity.this, realm, id);
 
-            // get updated User from database
-            User user = UserManager.getUserById(realm, id);
-            Log.d("user", user.toString());
-
-            onUserLoaded(user);
+            onUserLoaded();
         } finally {
             if (realm != null) {
                 realm.close();
@@ -122,7 +126,7 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
     }
 
     @Override
-    public void onUserLoaded(User user) {
+    public void onUserLoaded() {
         // grab all attached fragments
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
 

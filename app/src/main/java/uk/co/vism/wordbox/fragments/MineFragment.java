@@ -50,7 +50,7 @@ public class MineFragment extends WordBoxFragment {
             }
         });
 
-        myName.setText("Botond");
+        myName.setText(user.getUsername());
 
         sentences = new ArrayList<>();
         adapter = new BoxesAdapter(sentences);

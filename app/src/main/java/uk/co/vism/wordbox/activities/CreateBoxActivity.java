@@ -81,7 +81,7 @@ public class CreateBoxActivity extends Activity {
         // create sentence
         tempRealm.beginTransaction();
         TempSentence sentence = tempRealm.createObject(TempSentence.class);
-        sentence.setUser_id(1);
+        sentence.setUser_id(getSharedPreferences("wordbox", 0).getInt("userid", 0));
         
         for (TempWord wordToCopy : words) {
             TempWord realmWord = tempRealm.copyToRealm(wordToCopy);
@@ -91,12 +91,13 @@ public class CreateBoxActivity extends Activity {
 
         // upload sentence
         RestClientManager.uploadSentence(CreateBoxActivity.this, tempRealm, sentence);
+        tempRealm.close();
+
         finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        tempRealm.close();
     }
 }

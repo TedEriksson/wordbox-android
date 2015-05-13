@@ -77,6 +77,8 @@ public class LoginActivity extends ActionBarActivity {
 
     protected void clear() {
         Realm.deleteRealmFile(LoginActivity.this);
+        Realm.deleteRealmFile(LoginActivity.this, "temp.realm");
+
         getSharedPreferences("wordbox", 0).edit().clear().apply();
     }
 }
