@@ -116,6 +116,11 @@ public class RestClientManager {
         }
     }
 
+    public static void friendRequestByUsername(Context context, String username) {
+        int userid = context.getSharedPreferences("wordbox", 0).getInt("userid", 0);
+        getInstance(context).post("", "/users/" + userid + "/add_friend/" + username);
+    }
+
     public static void updateUser(Context context, Realm realm, int id) {
         String json = getInstance(context).get("/users/" + id);
         UserManager.updateUserByJson(realm, json);

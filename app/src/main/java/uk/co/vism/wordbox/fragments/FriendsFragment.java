@@ -28,6 +28,7 @@ import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.activities.HomeActivity_;
 import uk.co.vism.wordbox.adapters.FriendsAdapter;
+import uk.co.vism.wordbox.managers.RestClientManager;
 import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.Sentence;
 import uk.co.vism.wordbox.models.User;
@@ -128,7 +129,6 @@ public class FriendsFragment extends WordBoxFragment {
      * Attempts to find the user by username, and adds it as a friend
      * Needs to query server for user, handle not found, and if found, add it to the list
      */
-    @Background
     void addByUsername() {
         final EditText username = new EditText(getActivity());
         username.setTextColor(getResources().getColor(android.R.color.black));
@@ -139,17 +139,21 @@ public class FriendsFragment extends WordBoxFragment {
                 .setPositiveButton("Send request", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getActivity(), "" + username.getText(), Toast.LENGTH_SHORT).show();
+                        sendFriendRequest(username.getText().toString());
                     }
                 })
                 .show();
+    }
+
+    @Background
+    void sendFriendRequest(String username) {
+        RestClientManager.friendRequestByUsername(getActivity(), username);
     }
 
     /**
      * Prompts the user to enter an email address, and launched the default email client with to,
      * subject, and a default invitation message
      */
-    @Background
     void addByEmail() {
         final EditText username = new EditText(getActivity());
         username.setTextColor(getResources().getColor(android.R.color.black));
@@ -173,7 +177,6 @@ public class FriendsFragment extends WordBoxFragment {
     /**
      * Opens the contact picker and returns the selected contact, which is then picked up by onActivityResult
      */
-    @Background
     void addByContact() {
         Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(i, PICK_CONTACT);
