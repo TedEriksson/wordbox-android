@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import io.realm.Realm;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.models.TempSentence;
@@ -119,6 +121,18 @@ public class RestClientManager {
     public static void friendRequestByUsername(Context context, String username) {
         int userid = context.getSharedPreferences("wordbox", 0).getInt("userid", 0);
         getInstance(context).post("", "/users/" + userid + "/add_friend/" + username);
+    }
+
+    public static JSONArray getFriendRequests(Context context) {
+        int userid = context.getSharedPreferences("wordbox", 0).getInt("userid", 0);
+        String json = getInstance(context).get("/users/" + userid + "/friend_requests");
+
+        try {
+            return new JSONArray(json);
+        } catch(Exception e) {
+            Log.d("getFriendRequests:" + e.getClass(), e.getMessage());
+            return new JSONArray();
+        }
     }
 
     public static void updateUser(Context context, Realm realm, int id) {

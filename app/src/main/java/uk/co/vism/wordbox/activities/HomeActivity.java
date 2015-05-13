@@ -15,6 +15,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -44,11 +45,7 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
         adapter = new ViewPagerAdapter(viewPager, HomeActivity.this, getSupportFragmentManager());
 
         // if there are any pending requests
-        if (true)   // intellisense
-            requestCount.setText("You have 2 requests pending");
-        else
-            requestRow.setVisibility(LinearLayout.GONE);
-
+        getRequestCount();
         setupViewPager();
     }
 
@@ -123,6 +120,20 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
                 realm.close();
             }
         }
+    }
+
+    @Background
+    void getRequestCount() {
+        int count = RestClientManager.getFriendRequests(HomeActivity.this).length();
+        updateRequestRow(count);
+    }
+
+    @UiThread
+    void updateRequestRow(int count) {
+        if (count > 0)
+            requestCount.setText("You have " + count + " requests pending");
+        else
+            requestRow.setVisibility(LinearLayout.GONE);
     }
 
     @Override
