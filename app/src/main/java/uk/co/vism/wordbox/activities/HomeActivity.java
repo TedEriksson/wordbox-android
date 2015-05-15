@@ -51,6 +51,13 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
 
     @OptionsItem(R.id.action_logout)
     void logout() {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
+        // update data for each
+        for(int i = 0; i < fragments.size(); i++) {
+            ((WordBoxFragment) fragments.get(i)).closeRealm();
+        }
+
         getSharedPreferences("wordbox", 0).edit().clear().apply();
         LoginActivity_.intent(HomeActivity.this).start();
     }
@@ -78,27 +85,6 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
         RequestsActivity_.intent(HomeActivity.this).start();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // Outputs all words from Temporary Realm
-        // TODO: Remove example
-//        Realm realm = null;
-//        try {
-//            realm = Realm.getInstance(this, "temp.realm");
-//            for (TempSentence sentence : realm.where(TempSentence.class).findAll()) {
-//                for (TempWord word : sentence.getWords()) {
-//                    Log.d("TempWord", " word: " + word.getText());
-//                }
-//            }
-//        }
-//        finally {
-//            if (realm != null)
-//                realm.close();
-//        }
-    }
-
     /**
      * This method updates user 1, this user can be used throughout the app
      * TODO update proper user
@@ -113,13 +99,13 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
 
             // update user on app launch (this will get all info about them)
             RestClientManager.updateUser(HomeActivity.this, realm, id);
-
-            onUserLoaded();
         } finally {
             if (realm != null) {
                 realm.close();
             }
         }
+
+        onUserLoaded();
     }
 
     @Background

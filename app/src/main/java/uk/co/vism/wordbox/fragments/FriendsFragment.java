@@ -69,8 +69,8 @@ public class FriendsFragment extends WordBoxFragment {
     @UiThread
     public void updateData() {
         refreshLayout.setRefreshing(false);
-        friends.clear();
 
+        friends.clear();
         friends.addAll(user.getFriends());
         adapter.notifyItemRangeChanged(0, friends.size());
     }

@@ -23,19 +23,12 @@ public abstract class WordBoxFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         realm = Realm.getInstance(getActivity());
         user = UserManager.getUserById(realm, getActivity().getSharedPreferences("wordbox", 0).getInt("userid", 0));
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        realm.close();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    public void closeRealm() {
         realm.close();
     }
 }

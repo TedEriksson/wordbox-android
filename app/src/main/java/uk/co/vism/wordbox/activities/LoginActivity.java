@@ -1,5 +1,6 @@
 package uk.co.vism.wordbox.activities;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,12 +22,15 @@ public class LoginActivity extends ActionBarActivity {
     EditText email;
     @ViewById
     EditText password;
+    private ProgressDialog dialog;
 
     @AfterViews
     void init() {
         if(getSharedPreferences("wordbox", 0).contains("userid")) {
             HomeActivity_.intent(LoginActivity.this).start();
         }
+
+        dialog = new ProgressDialog(LoginActivity.this);
     }
 
     @Click
@@ -44,6 +48,11 @@ public class LoginActivity extends ActionBarActivity {
         }
 
         if(email.getText().length() > 0 && password.getText().length() > 0) {
+            dialog.setTitle("Logging in");
+            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            dialog.setProgress(0);
+            dialog.show();
+
             clear();
             attemptLogin();
         }
@@ -74,6 +83,7 @@ public class LoginActivity extends ActionBarActivity {
 
     @UiThread
     void error() {
+        dialog.dismiss();
         Toast.makeText(LoginActivity.this, "Invalid login credentials. Please try again.", Toast.LENGTH_SHORT).show();
     }
 

@@ -54,8 +54,8 @@ public class BoxesFragment extends WordBoxFragment {
     public void updateData() {
         // called by update
         refreshLayout.setRefreshing(false);
-        sentences.clear();
 
+        sentences.clear();
         sentences.addAll(user.getSentences());
 
         // notify that we've updated

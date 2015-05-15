@@ -64,8 +64,8 @@ public class MineFragment extends WordBoxFragment {
     @UiThread
     public void updateData() {
         refreshLayout.setRefreshing(false);
-        sentences.clear();
 
+        sentences.clear();
         sentences.addAll(user.getSentences());
         adapter.notifyItemRangeChanged(0, sentences.size());
     }

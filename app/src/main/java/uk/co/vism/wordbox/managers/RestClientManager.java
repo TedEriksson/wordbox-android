@@ -188,13 +188,18 @@ public class RestClientManager {
 
     protected Request.Builder addHeaders(Request.Builder builder) {
         SharedPreferences prefs = context.getSharedPreferences("wordbox", 0);
-        if(prefs.contains("access-token")) {
-            builder.addHeader("Access-Token", prefs.getString("access-token", ""));
-            builder.addHeader("Uid", prefs.getString("uid", ""));
-            builder.addHeader("token-type", prefs.getString("token-type", ""));
-            builder.addHeader("client", prefs.getString("client", ""));
-            builder.addHeader("expiry", prefs.getString("expiry", ""));
-        }
+
+        builder.addHeader("Access-Token", prefs.getString("access-token", ""));
+        builder.addHeader("Uid", prefs.getString("uid", ""));
+        builder.addHeader("token-type", prefs.getString("token-type", ""));
+        builder.addHeader("client", prefs.getString("client", ""));
+        builder.addHeader("expiry", prefs.getString("expiry", ""));
+
+//        Log.d("header", "access " + prefs.getString("access-token", ""));
+//        Log.d("header", "uid " + prefs.getString("uid", ""));
+//        Log.d("header", "token " + prefs.getString("token-type", ""));
+//        Log.d("header", "client " + prefs.getString("client", ""));
+//        Log.d("header", "expiry " + prefs.getString("expiry", ""));
 
         return builder;
     }
@@ -205,11 +210,20 @@ public class RestClientManager {
      */
     protected void saveHeaders(Response response) {
         SharedPreferences.Editor editor = context.getSharedPreferences("wordbox", 0).edit();
+
         editor.putString("access-token", response.header("Access-Token"));
         editor.putString("uid", response.header("Uid"));
         editor.putString("token-type", response.header("token-type"));
         editor.putString("client", response.header("client"));
         editor.putString("expiry", response.header("expiry"));
+
         editor.apply();
+
+        SharedPreferences prefs = context.getSharedPreferences("wordbox", 0);
+        Log.d("header", "access " + prefs.getString("access-token", ""));
+        Log.d("header", "uid " + prefs.getString("uid", ""));
+        Log.d("header", "token " + prefs.getString("token-type", ""));
+        Log.d("header", "client " + prefs.getString("client", ""));
+        Log.d("header", "expiry " + prefs.getString("expiry", ""));
     }
 }
