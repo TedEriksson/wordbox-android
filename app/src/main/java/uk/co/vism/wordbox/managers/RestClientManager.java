@@ -19,6 +19,10 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import uk.co.vism.wordbox.R;
+import uk.co.vism.wordbox.activities.HomeActivity;
+import uk.co.vism.wordbox.activities.LoginActivity;
+import uk.co.vism.wordbox.activities.LoginActivity_;
+import uk.co.vism.wordbox.models.FriendRequest;
 import uk.co.vism.wordbox.models.TempSentence;
 import uk.co.vism.wordbox.models.TempWord;
 import uk.co.vism.wordbox.models.User;
@@ -123,15 +127,44 @@ public class RestClientManager {
         getInstance(context).post("", "/users/" + userid + "/add_friend/" + username);
     }
 
-    public static JSONArray getFriendRequests(Context context) {
-        int userid = context.getSharedPreferences("wordbox", 0).getInt("userid", 0);
-        String json = getInstance(context).get("/users/" + userid + "/friend_requests");
+    /**
+     * Queries the network for friend requests, and saves them in the realm,
+     * returning the number of pending requests
+     * @param context
+     * @param realm
+     * @return number of pending requests
+     */
+    public static int getFriendRequests(Context context, Realm realm) {
+        int userID = context.getSharedPreferences("wordbox", 0).getInt("userid", 0);
+        String json = getInstance(context).get("/users/" + userID + "/friend_requests");
 
         try {
-            return new JSONArray(json);
+            // create the request objects in the realm
+            JSONArray array = new JSONArray(json);
+            for(int i = 0; i < array.length(); i++) {
+                realm.beginTransaction();
+                realm.createOrUpdateObjectFromJson(FriendRequest.class, array.getJSONObject(i));
+                realm.commitTransaction();
+            }
+            return array.length();
         } catch(Exception e) {
             Log.d("getFriendRequests:" + e.getClass(), e.getMessage());
-            return new JSONArray();
+            return 0;
+        }
+    }
+
+    public static boolean updateFriendRequest(Context context, int requestID, boolean accepted) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("pending", accepted ? false : null);
+
+            String json = getInstance(context).put(jsonObject.toString(), "/friends/" + requestID);
+            Log.d("requests", json);
+
+            return json.length() == 0;
+        } catch(Exception e) {
+            Log.d("updateFriendRequest:" + e.getClass(), e.getMessage());
+            return false;
         }
     }
 
@@ -186,6 +219,21 @@ public class RestClientManager {
         }
     }
 
+    protected String put(String json, String url) {
+        RequestBody body = RequestBody.create(JSON, json);
+        Request.Builder builder = new Request.Builder().url(BASE_URL + url).put(body);
+        builder = addHeaders(builder);
+
+        try {
+            Response response = client.newCall(builder.build()).execute();
+            saveHeaders(response);
+            return response.body().string();
+        } catch(Exception e) {
+            Log.d("RestClient:put:" + e.getClass(), e.getMessage());
+            return "";
+        }
+    }
+
     protected Request.Builder addHeaders(Request.Builder builder) {
         SharedPreferences prefs = context.getSharedPreferences("wordbox", 0);
 
@@ -209,6 +257,17 @@ public class RestClientManager {
      * @param response
      */
     protected void saveHeaders(Response response) {
+        // unauthorized?
+        if(response.code() == 401) {
+            HomeActivity activity = (HomeActivity)context;
+            activity.logout();
+        }
+
+        // no headers? ignore save request
+        if(response.header("Access-Token") == null)
+            return;
+
+        // finally, save headers
         SharedPreferences.Editor editor = context.getSharedPreferences("wordbox", 0).edit();
 
         editor.putString("access-token", response.header("Access-Token"));
@@ -218,12 +277,5 @@ public class RestClientManager {
         editor.putString("expiry", response.header("expiry"));
 
         editor.apply();
-
-        SharedPreferences prefs = context.getSharedPreferences("wordbox", 0);
-        Log.d("header", "access " + prefs.getString("access-token", ""));
-        Log.d("header", "uid " + prefs.getString("uid", ""));
-        Log.d("header", "token " + prefs.getString("token-type", ""));
-        Log.d("header", "client " + prefs.getString("client", ""));
-        Log.d("header", "expiry " + prefs.getString("expiry", ""));
     }
 }

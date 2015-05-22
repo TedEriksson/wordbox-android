@@ -12,11 +12,14 @@ import java.util.ArrayList;
 import io.realm.RealmObject;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.activities.RecordWordActivity_;
+import uk.co.vism.wordbox.activities.RequestsActivity;
+import uk.co.vism.wordbox.models.FriendRequest;
 import uk.co.vism.wordbox.models.User;
 import uk.co.vism.wordbox.models.Word;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHolder> {
     private ArrayList<? extends RealmObject> requests;
+    private RequestsActivity activity;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
@@ -32,8 +35,9 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         }
     }
 
-    public RequestsAdapter(ArrayList<? extends RealmObject> requests) {
+    public RequestsAdapter(ArrayList<? extends RealmObject> requests, RequestsActivity activity) {
         this.requests = requests;
+        this.activity = activity;
     }
 
     @Override
@@ -55,14 +59,21 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
             viewHolder.accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RecordWordActivity_.intent(viewHolder.title.getContext()).extra("word_id", word.getId()).start();
+                    RecordWordActivity_.intent(activity).extra("word_id", word.getId()).start();
                 }
             });
-        } else if (obj instanceof User) {
-            User user = (User) obj;
-            viewHolder.title.setText(user.getUsername());
+        } else if (obj instanceof FriendRequest) {
+            final FriendRequest request = (FriendRequest) obj;
+
+            viewHolder.title.setText(request.getUser_two() + "");
             viewHolder.title.setBackgroundColor(viewHolder.title.getResources().getColor(R.color.green));
             viewHolder.description.setText("Add friend?");
+            viewHolder.accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activity.acceptFriendRequest(request.getId());
+                }
+            });
         }
     }
 

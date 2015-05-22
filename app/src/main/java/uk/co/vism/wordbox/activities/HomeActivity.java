@@ -3,6 +3,7 @@ package uk.co.vism.wordbox.activities;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,10 +18,14 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.exceptions.RealmMigrationNeededException;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.adapters.ViewPagerAdapter;
 import uk.co.vism.wordbox.fragments.WordBoxFragment;
@@ -50,12 +55,14 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
     }
 
     @OptionsItem(R.id.action_logout)
-    void logout() {
+    public void logout() {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
 
-        // update data for each
-        for(int i = 0; i < fragments.size(); i++) {
-            ((WordBoxFragment) fragments.get(i)).closeRealm();
+        if(fragments != null) {
+            // update data for each
+            for (int i = 0; i < fragments.size(); i++) {
+                ((WordBoxFragment) fragments.get(i)).closeRealm();
+            }
         }
 
         getSharedPreferences("wordbox", 0).edit().clear().apply();
@@ -110,8 +117,16 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
 
     @Background
     void getRequestCount() {
-        int count = RestClientManager.getFriendRequests(HomeActivity.this).length();
-        updateRequestRow(count);
+        Realm realm = null;
+        try {
+            realm = Realm.getInstance(HomeActivity.this);
+            int count = RestClientManager.getFriendRequests(HomeActivity.this, realm);
+            updateRequestRow(count);
+        } finally {
+            if(realm != null) {
+                realm.close();
+            }
+        }
     }
 
     @UiThread
