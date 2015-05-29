@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:fab="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -51,11 +52,15 @@
             android:layout_height="match_parent"
             android:id="@+id/viewPager"/>
 
-        <ImageView
+        <com.melnykov.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
+            android:layout_gravity="bottom|end|right"
+            android:layout_margin="16dp"
             android:id="@+id/addNewBox"
-            android:background="@android:drawable/btn_plus"/>
+            android:src="@drawable/ic_add_white_24dp"
+            fab:fab_colorNormal="@color/orange"
+            fab:fab_colorPressed="@color/orange"
+            fab:fab_colorRipple="@color/orange" />
     </FrameLayout>
 </LinearLayout>

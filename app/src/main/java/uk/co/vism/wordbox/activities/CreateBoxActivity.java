@@ -34,39 +34,39 @@ public class CreateBoxActivity extends Activity {
     @ViewById(R.id.wordNumber)
     TextView wordNumber;
 
-    private Realm tempRealm;
     private EditText word;
-    private ArrayList<TempWord> words;
-
-    private TextView.OnEditorActionListener actionListener = new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                words.add(new TempWord(v.getId() - ID_PREFIX, v.getText().toString()));
-                createEditWordRow();
-                return true;
-            }
-
-            return false;
-        }
-    };
+    private ArrayList<EditText> editTexts;
 
     @AfterViews
     void init() {
-        words = new ArrayList<>();
+        editTexts = new ArrayList<>();
         createEditWordRow();
     }
 
     private void createEditWordRow() {
-        wordNumber.setText(words.size() + " words");
-
+        // create new textfield
         word = (EditText) LayoutInflater.from(CreateBoxActivity.this).inflate(R.layout.new_word, null);
-        word.setId(ID_PREFIX + words.size());
+        word.setId(ID_PREFIX + editTexts.size());
         word.requestFocus();
         word.requestFocusFromTouch();
-        word.setOnEditorActionListener(actionListener);
+        word.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    createEditWordRow();
+                    return true;
+                }
 
+                return false;
+            }
+        });
+
+        // add to layout
         wordList.addView(word);
+        // update counter
+        wordNumber.setText(editTexts.size() + " words");
+        // add to list of words
+        editTexts.add(word);
     }
 
     /**
@@ -76,22 +76,29 @@ public class CreateBoxActivity extends Activity {
     @Click(R.id.wordDone)
     @Background
     void clickDone() {
-        tempRealm = Realm.getInstance(CreateBoxActivity.this, "temp.realm");
+        Realm tempRealm = null;
+        try {
+            tempRealm = Realm.getInstance(CreateBoxActivity.this, "temp.realm");
 
-        // create sentence
-        tempRealm.beginTransaction();
-        TempSentence sentence = tempRealm.createObject(TempSentence.class);
-        sentence.setUser_id(getSharedPreferences("wordbox", 0).getInt("userid", 0));
-        
-        for (TempWord wordToCopy : words) {
-            TempWord realmWord = tempRealm.copyToRealm(wordToCopy);
-            sentence.getWords().add(realmWord);
+            // create sentence
+            tempRealm.beginTransaction();
+            TempSentence sentence = tempRealm.createObject(TempSentence.class);
+            sentence.setUser_id(getSharedPreferences("wordbox", 0).getInt("userid", 0));
+
+            for (EditText text : editTexts) {
+                TempWord word = new TempWord(text.getId() - ID_PREFIX, text.getText().toString().trim());
+                word = tempRealm.copyToRealm(word);
+                sentence.getWords().add(word);
+            }
+            tempRealm.commitTransaction();
+
+            // upload sentence
+            RestClientManager.uploadSentence(CreateBoxActivity.this, tempRealm, sentence);
+        } finally {
+            if(tempRealm != null) {
+                tempRealm.close();
+            }
         }
-        tempRealm.commitTransaction();
-
-        // upload sentence
-        RestClientManager.uploadSentence(CreateBoxActivity.this, tempRealm, sentence);
-        tempRealm.close();
 
         finish();
     }

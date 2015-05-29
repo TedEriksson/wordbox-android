@@ -31,6 +31,7 @@ public class BoxesFragment extends WordBoxFragment {
 
     @AfterViews
     void init() {
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue), getResources().getColor(R.color.orange), getResources().getColor(R.color.green));
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -55,7 +56,7 @@ public class BoxesFragment extends WordBoxFragment {
         refreshLayout.setRefreshing(false);
 
         sentences.clear();
-        sentences.addAll(user.getSentences());
+        //sentences.addAll(user.getSentences());
 
         // notify that we've updated
         adapter.notifyItemRangeChanged(0, sentences.size());
