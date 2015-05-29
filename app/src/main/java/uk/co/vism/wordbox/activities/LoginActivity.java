@@ -26,6 +26,7 @@ public class LoginActivity extends ActionBarActivity {
 
     @AfterViews
     void init() {
+        // check if we're alraedy logged in
         if(getSharedPreferences("wordbox", 0).contains("userid")) {
             HomeActivity_.intent(LoginActivity.this).start();
         }
@@ -40,6 +41,7 @@ public class LoginActivity extends ActionBarActivity {
 
     @Click
     void login() {
+        // check for compulsory data
         if(email.getText().length() == 0) {
             email.setHintTextColor(getResources().getColor(android.R.color.holo_red_light));
         }
@@ -47,6 +49,7 @@ public class LoginActivity extends ActionBarActivity {
             password.setHintTextColor(getResources().getColor(android.R.color.holo_red_light));
         }
 
+        // if everything set up accordingly, attempt login
         if(email.getText().length() > 0 && password.getText().length() > 0) {
             dialog.setTitle("Logging in");
             dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -61,7 +64,6 @@ public class LoginActivity extends ActionBarActivity {
     @Background
     void attemptLogin() {
         Realm realm = null;
-
         try {
             realm = Realm.getInstance(LoginActivity.this);
 

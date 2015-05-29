@@ -48,7 +48,7 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
         adapter = new ViewPagerAdapter(viewPager, HomeActivity.this, getSupportFragmentManager());
 
         // if there are any pending requests
-        //getRequestCount();
+        getRequestCount();
         setupViewPager();
     }
 
