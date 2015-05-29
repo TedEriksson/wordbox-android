@@ -48,6 +48,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
+        final int pos = i;
         RealmObject obj = requests.get(i);
 
         if (obj instanceof Word) {
@@ -72,6 +73,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     activity.acceptFriendRequest(request.getId());
+                    removeItem(pos);
                 }
             });
         }
@@ -80,5 +82,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
     @Override
     public int getItemCount() {
         return requests.size();
+    }
+
+    private void removeItem(int i) {
+        requests.remove(i);
+        notifyItemRemoved(i);
     }
 }

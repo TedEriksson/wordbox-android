@@ -170,7 +170,7 @@ public class RestClientManager {
 
     public static void updateUser(Context context, Realm realm, int id) {
         String json = getInstance(context).get("/users/" + id);
-        UserManager.updateUserByJson(realm, json);
+        User user = UserManager.updateUserByJson(realm, json);
     }
 
     public static void uploadSentence(Context context, Realm realm, TempSentence sentence) {

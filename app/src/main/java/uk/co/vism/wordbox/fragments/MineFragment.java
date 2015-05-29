@@ -3,25 +3,20 @@ package uk.co.vism.wordbox.fragments;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.activities.HomeActivity_;
 import uk.co.vism.wordbox.adapters.BoxesAdapter;
-import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.Sentence;
-import uk.co.vism.wordbox.models.User;
 
 @EFragment(R.layout.fragment_mine)
 public class MineFragment extends WordBoxFragment {
@@ -46,7 +41,7 @@ public class MineFragment extends WordBoxFragment {
             @Override
             public void onRefresh() {
                 HomeActivity_ activity = (HomeActivity_) getActivity();
-                activity.downloadUser();
+                activity.updateData();
             }
         });
 

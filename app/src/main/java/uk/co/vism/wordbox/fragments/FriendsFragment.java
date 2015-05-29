@@ -10,7 +10,6 @@ import android.provider.ContactsContract;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,14 +22,10 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
-import io.realm.RealmList;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.activities.HomeActivity_;
 import uk.co.vism.wordbox.adapters.FriendsAdapter;
 import uk.co.vism.wordbox.managers.RestClientManager;
-import uk.co.vism.wordbox.managers.UserManager;
-import uk.co.vism.wordbox.models.Sentence;
 import uk.co.vism.wordbox.models.User;
 
 @EFragment(R.layout.fragment_friends)
@@ -53,7 +48,7 @@ public class FriendsFragment extends WordBoxFragment {
             @Override
             public void onRefresh() {
                 HomeActivity_ activity = (HomeActivity_) getActivity();
-                activity.downloadUser();
+                activity.updateData();
             }
         });
 

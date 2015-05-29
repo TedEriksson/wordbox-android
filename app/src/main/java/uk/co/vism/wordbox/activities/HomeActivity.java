@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.widget.LinearLayout;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,22 +18,20 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmObject;
-import io.realm.exceptions.RealmMigrationNeededException;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.adapters.ViewPagerAdapter;
 import uk.co.vism.wordbox.fragments.WordBoxFragment;
 import uk.co.vism.wordbox.managers.RestClientManager;
+import uk.co.vism.wordbox.managers.UserManager;
+import uk.co.vism.wordbox.models.User;
 
 @EActivity(R.layout.activity_home)
 @OptionsMenu(R.menu.menu_home)
-public class HomeActivity extends ActionBarActivity implements WordBoxFragment.OnUserLoaded {
+public class HomeActivity extends ActionBarActivity implements WordBoxFragment.OnDataLoaded {
     @ViewById(R.id.tabs)
     PagerSlidingTabStrip tabs;
     @ViewById(R.id.viewPager)
@@ -50,7 +48,7 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
         adapter = new ViewPagerAdapter(viewPager, HomeActivity.this, getSupportFragmentManager());
 
         // if there are any pending requests
-        getRequestCount();
+        //getRequestCount();
         setupViewPager();
     }
 
@@ -93,26 +91,26 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
     }
 
     /**
-     * This method updates user 1, this user can be used throughout the app
-     * TODO update proper user
+     * Updates the user and any other data, propagating the change to the fragments
      */
     @Background
-    void downloadUser() {
+    void updateData() {
         Realm realm = null;
 
         try {
             realm = Realm.getInstance(HomeActivity.this);
             int id = getSharedPreferences("wordbox", 0).getInt("userid", 0);
 
-            // update user on app launch (this will get all info about them)
             RestClientManager.updateUser(HomeActivity.this, realm, id);
+            int count = RestClientManager.getFriendRequests(HomeActivity.this, realm);
+            updateRequestRow(count);
         } finally {
             if (realm != null) {
                 realm.close();
             }
         }
 
-        onUserLoaded();
+        onDataLoaded();
     }
 
     @Background
@@ -131,14 +129,16 @@ public class HomeActivity extends ActionBarActivity implements WordBoxFragment.O
 
     @UiThread
     void updateRequestRow(int count) {
-        if (count > 0)
+        if (count > 0) {
             requestCount.setText("You have " + count + " requests pending");
-        else
-            requestRow.setVisibility(LinearLayout.GONE);
+            requestRow.setVisibility(View.VISIBLE);
+        } else {
+            requestRow.setVisibility(View.GONE);
+        }
     }
 
     @Override
-    public void onUserLoaded() {
+    public void onDataLoaded() {
         // grab all attached fragments
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
 

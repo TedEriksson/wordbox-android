@@ -72,19 +72,21 @@ public class RequestsActivity extends ActionBarActivity {
 
     @Background
     public void acceptFriendRequest(int requestID) {
-        Realm realm = null;
-        try {
-            realm = Realm.getInstance(RequestsActivity.this);
-            FriendRequest request = realm.where(FriendRequest.class).equalTo("id", requestID).findFirst();
+        boolean success = RestClientManager.updateFriendRequest(RequestsActivity.this, requestID, true);
 
-            if(RestClientManager.updateFriendRequest(RequestsActivity.this, request.getId(), true)) {
+        if(success) {
+            Realm realm = null;
+            try {
+                realm = Realm.getInstance(RequestsActivity.this);
+                FriendRequest request = realm.where(FriendRequest.class).equalTo("id", requestID).findFirst();
+
                 realm.beginTransaction();
                 request.removeFromRealm();
                 realm.commitTransaction();
-            }
-        } finally {
-            if(realm != null) {
-                realm.close();
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
             }
         }
     }

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import uk.co.vism.wordbox.R;
 import uk.co.vism.wordbox.activities.HomeActivity_;
 import uk.co.vism.wordbox.adapters.BoxesAdapter;
-import uk.co.vism.wordbox.managers.UserManager;
 import uk.co.vism.wordbox.models.Sentence;
 
 @EFragment(R.layout.fragment_boxes)
@@ -36,7 +35,7 @@ public class BoxesFragment extends WordBoxFragment {
             @Override
             public void onRefresh() {
                 HomeActivity_ activity = (HomeActivity_) getActivity();
-                activity.downloadUser();
+                activity.updateData();
             }
         });
 
